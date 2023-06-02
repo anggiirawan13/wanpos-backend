@@ -13,14 +13,13 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.Random;
 import java.util.UUID;
 
 @Service
 public class DataService {
 
     @Autowired
-    private DataRepository dataRepository;
+    private final DataRepository dataRepository;
 
     public DataService(DataRepository dataRepository) {
         this.dataRepository = dataRepository;
@@ -95,7 +94,7 @@ public class DataService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
 
-            String uuid = UUID.fromString(req.getErrorCode()).toString();
+            String uuid = UUID.randomUUID().toString();
             Timestamp dateNow = new Timestamp(new Date().getTime());
 
             DataEntity data = new DataEntity();

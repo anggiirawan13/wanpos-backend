@@ -12,18 +12,14 @@ public class NullEmptyChecker {
         } else {
             if (value instanceof String) {
                 return String.valueOf(value).trim().isEmpty();
-            } else if (value instanceof Collection) {
-                return ((Collection) value).isEmpty();
-            } else if (value instanceof AbstractMap) {
-                return ((AbstractMap) value).isEmpty();
-            } else if (value instanceof AbstractCollection) {
-                return ((AbstractCollection) value).isEmpty();
-            } else if (value instanceof AbstractList) {
-                return ((AbstractList) value).isEmpty();
-            } else if (value instanceof AbstractSet) {
-                return ((AbstractSet) value).isEmpty();
-            } else if (value instanceof AbstractSequentialList) {
-                return ((AbstractSequentialList) value).isEmpty();
+            }
+
+            if (value instanceof Collection) {
+                return ((Collection<?>) value).isEmpty();
+            }
+
+            if (value instanceof AbstractMap) {
+                return ((AbstractMap<?, ?>) value).isEmpty();
             }
         }
 

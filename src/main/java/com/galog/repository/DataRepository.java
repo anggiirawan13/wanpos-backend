@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface DataRepository extends CrudRepository<DataEntity, Long> {
     @Query(value = "SELECT error_code, desc_error FROM data WHERE error_code = :errorCode", nativeQuery = true)
     DataResponse findByErrorCode(@Param("errorCode") String errorCode);
+
 }
