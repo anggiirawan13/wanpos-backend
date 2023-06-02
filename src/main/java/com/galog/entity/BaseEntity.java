@@ -5,10 +5,14 @@ import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Data
 @MappedSuperclass
 public class BaseEntity {
+    @Column(name = "uuid", nullable = false, length = 64)
+    private String uuid;
+
     @Column(name = "created_by", nullable = false, length = 50)
     private String createdBy;
 

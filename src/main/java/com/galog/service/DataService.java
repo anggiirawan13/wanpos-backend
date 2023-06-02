@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class DataService {
@@ -93,9 +95,11 @@ public class DataService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
 
+            String uuid = UUID.fromString(req.getErrorCode()).toString();
             Timestamp dateNow = new Timestamp(new Date().getTime());
 
             DataEntity data = new DataEntity();
+            data.setUuid(uuid);
             data.setErrorCode(req.getErrorCode());
             data.setDescError(req.getDescError());
             data.setCreatedBy(req.getCreatedBy());
