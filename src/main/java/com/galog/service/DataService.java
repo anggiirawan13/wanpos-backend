@@ -30,7 +30,7 @@ public class DataService {
             if (NullEmptyChecker.isNullOrEmpty(errorCode)) {
                 response.setSuccess(false);
                 response.setCode(HttpStatus.BAD_REQUEST.value());
-                response.setMessage("PARAMETER_REQUIRED");
+                response.setMessage("PARAMETER_CODE_REQUIRED");
                 response.setData(null);
 
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
