@@ -1,6 +1,6 @@
 package com.galog.repository;
 
-import com.galog.dto.out.DataDTOOut;
+import com.galog.dto.response.DataResponse;
 import com.galog.entity.DataEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DataRepository extends CrudRepository<DataEntity, Long> {
-    @Query(value = "SELECT err_code, info_err FROM data WHERE err_code = :errCode", nativeQuery = true)
-    DataDTOOut findByErrorCode(@Param("errCode") String errCode);
+    @Query(value = "SELECT error_code, desc_error FROM data WHERE error_code = :errorCode", nativeQuery = true)
+    DataResponse findByErrorCode(@Param("errorCode") String errorCode);
 }
