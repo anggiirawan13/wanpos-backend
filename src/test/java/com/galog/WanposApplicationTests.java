@@ -1,10 +1,10 @@
-package com.galog;
+package com.wanpos;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GalogApplicationTests {
+class WanposApplicationTests {
 
 	@Test
 	void contextLoads() {
