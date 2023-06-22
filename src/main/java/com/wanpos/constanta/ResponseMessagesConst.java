@@ -19,6 +19,18 @@ public enum ResponseMessagesConst {
         public String toString() {
             return "DATA_FOUND";
         }
+    },
+    DATA_NOT_FOUND {
+        @Override
+        public String toString() {
+            return "DATA_NOT_FOUND";
+        }
+    },
+    ALREADY_EXIST {
+        @Override
+        public String toString() {
+            return "ALREADY_EXIST";
+        }
     }
 
 }

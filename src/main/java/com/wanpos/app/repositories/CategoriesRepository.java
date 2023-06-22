@@ -15,4 +15,7 @@ public interface CategoriesRepository extends PagingAndSortingRepository<Categor
     @Query(value = "SELECT * FROM categories WHERE uuid = :uuid", nativeQuery = true)
     CategoriesEntity getCategoryByUUID(@Param("uuid") String uuid);
 
+    @Query(value = "SELECT * FROM categories WHERE category_code = :category_code", nativeQuery = true)
+    CategoriesEntity getCategoryByCategoryCode(@Param("category_code") String category_code);
+
 }

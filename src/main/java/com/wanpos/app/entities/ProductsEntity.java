@@ -25,4 +25,7 @@ public class ProductsEntity extends BaseEntity {
     @Column(name = "price", nullable = false, length = 11)
     private double price;
 
+    @Column(name = "category_id", nullable = false)
+    private Long categoryID;
+
 }

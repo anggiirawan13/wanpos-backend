@@ -13,8 +13,10 @@ public class BaseResponse {
     @JsonProperty(namespace = "status_code")
     private int statusCode;
 
+    @JsonProperty(namespace = "messages")
     private String messages;
 
+    @JsonProperty(namespace = "result")
     private Object result;
 
 }

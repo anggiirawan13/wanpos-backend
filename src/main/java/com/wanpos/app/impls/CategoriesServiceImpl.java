@@ -15,12 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -35,6 +33,11 @@ public class CategoriesServiceImpl implements CategoriesService {
     @Override
     public BaseResponse saveCategory(CategoriesInsertRequest request) {
         try {
+            CategoriesEntity oldCategory = categoriesRepository.getCategoryByCategoryCode(request.getCategoryCode());
+            if (NullEmptyChecker.isNotNullOrEmpty(oldCategory)) {
+                return new BaseResponse(HttpStatus.CONFLICT.value(), ResponseMessagesConst.ALREADY_EXIST.toString(), null);
+            }
+
             CategoriesEntity newCategory = new CategoriesEntity();
             newCategory.setUuid(UUID.randomUUID().toString());
             newCategory.setCategoryCode(request.getCategoryCode());
@@ -61,7 +64,7 @@ public class CategoriesServiceImpl implements CategoriesService {
         try {
             CategoriesEntity oldCategory = categoriesRepository.getCategoryByUUID(request.getUuid());
             if (NullEmptyChecker.isNullOrEmpty(oldCategory)) {
-                return new BaseResponse(HttpStatus.NOT_FOUND.value(), "DATA_NOT_FOUND", null);
+                return new BaseResponse(HttpStatus.NOT_FOUND.value(), ResponseMessagesConst.DATA_NOT_FOUND.toString(), null);
             }
 
             CategoriesEntity updateCategory = categoriesRepository.getCategoryByUUID(request.getUuid());
@@ -87,7 +90,7 @@ public class CategoriesServiceImpl implements CategoriesService {
         try {
             CategoriesEntity oldCategory = categoriesRepository.getCategoryByUUID(uuid);
             if (NullEmptyChecker.isNullOrEmpty(oldCategory)) {
-                return new BaseResponse(HttpStatus.NOT_FOUND.value(), "DATA_NOT_FOUND", null);
+                return new BaseResponse(HttpStatus.NOT_FOUND.value(), ResponseMessagesConst.DATA_NOT_FOUND.toString(), null);
             }
 
             categoriesRepository.delete(oldCategory);
