@@ -1,4 +1,4 @@
-package com.wanpos.app.configuration;
+package com.wanpos.configuration;
 
 public class ConstantaVariableConfiguration {
 
@@ -8,6 +8,6 @@ public class ConstantaVariableConfiguration {
 
     public static final String SECRET_KEY_GENERATE_TOKEN = "gKxKcBkf49DcrSXCGkmggxQWvKkcEVXR2WRMUM9krnBxrKgq3NkLWze8FjLagong";
 
-    public static final long EXPIRATION_TOKEN = 7_200_000; // 7.200.000 ms == 2 h
+    public static final long EXPIRATION_TOKEN = 7200000; // 7.200.000 ms == 2 h
 
 }

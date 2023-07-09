@@ -1,4 +1,4 @@
-package com.wanpos.app.jwt;
+package com.wanpos.jwt;
 
 import com.wanpos.app.impls.UsersDetailLoginServiceImpl;
 import com.wanpos.helper.NullEmptyChecker;
@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.wanpos.app.configuration.ConstantaVariableConfiguration.HEADER_AUTH;
-import static com.wanpos.app.configuration.ConstantaVariableConfiguration.TOKEN_PREFIX;
+import static com.wanpos.configuration.ConstantaVariableConfiguration.HEADER_AUTH;
+import static com.wanpos.configuration.ConstantaVariableConfiguration.TOKEN_PREFIX;
 
 @Service
 public class JWTFilterUserLogin extends OncePerRequestFilter {
@@ -39,7 +39,7 @@ public class JWTFilterUserLogin extends OncePerRequestFilter {
             username = jwtUtils.extractUsername(token, request);
         }
 
-        if (NullEmptyChecker.isNullOrEmpty(username) && NullEmptyChecker.isNotNullOrEmpty(SecurityContextHolder.getContext().getAuthentication())) {
+        if (NullEmptyChecker.isNotNullOrEmpty(username) && NullEmptyChecker.isNullOrEmpty(SecurityContextHolder.getContext().getAuthentication())) {
             UserDetails userDetails = usersDetailLoginServiceImpl.loadUserByUsername(username);
 
             if (jwtUtils.isValidToken(token, userDetails, request)) {

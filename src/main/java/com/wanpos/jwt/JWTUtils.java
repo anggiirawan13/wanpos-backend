@@ -1,8 +1,7 @@
-package com.wanpos.app.jwt;
+package com.wanpos.jwt;
 
 import com.wanpos.app.dtos.responses.BaseResponse;
 import com.wanpos.app.entities.UsersEntity;
-import com.wanpos.app.impls.UsersServiceImpl;
 import com.wanpos.app.repositories.UsersRepository;
 import com.wanpos.handler.InternalServerError;
 import io.jsonwebtoken.*;
@@ -16,8 +15,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.function.Function;
 
-import static com.wanpos.app.configuration.ConstantaVariableConfiguration.EXPIRATION_TOKEN;
-import static com.wanpos.app.configuration.ConstantaVariableConfiguration.SECRET_KEY_GENERATE_TOKEN;
+import static com.wanpos.configuration.ConstantaVariableConfiguration.EXPIRATION_TOKEN;
+import static com.wanpos.configuration.ConstantaVariableConfiguration.SECRET_KEY_GENERATE_TOKEN;
 
 @Service
 public class JWTUtils {
@@ -25,7 +24,7 @@ public class JWTUtils {
     @Autowired
     private UsersRepository usersRepository;
 
-    public BaseResponse generateToken(String username) {
+    public String generateToken(String username) {
         UsersEntity user = usersRepository.findByUsername(username);
 
         HashMap<String, Object> claims = new HashMap<>();
@@ -35,7 +34,7 @@ public class JWTUtils {
         return createToken(claims, username);
     }
 
-    private BaseResponse createToken(HashMap<String, Object> claims, String subject) {
+    private String createToken(HashMap<String, Object> claims, String subject) {
         try {
             Date loginTime = new Date(System.currentTimeMillis());
 
@@ -48,9 +47,9 @@ public class JWTUtils {
                     .signWith(SignatureAlgorithm.HS256, SECRET_KEY_GENERATE_TOKEN)
                     .compact();
 
-            return new BaseResponse(HttpStatus.OK.value(), true, "LOGIN SUCCESS", token);
+            return token;
         } catch (Exception e) {
-            return InternalServerError.InternalServerError(e);
+            return null;
         }
     }
 

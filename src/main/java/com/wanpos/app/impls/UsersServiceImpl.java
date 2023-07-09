@@ -1,7 +1,7 @@
 package com.wanpos.app.impls;
 
 import com.wanpos.app.dtos.requests.UsersLoginRequest;
-import com.wanpos.app.jwt.JWTUtils;
+import com.wanpos.jwt.JWTUtils;
 import com.wanpos.app.repositories.UsersRepository;
 import com.wanpos.app.dtos.requests.UsersRegisterRequest;
 import com.wanpos.app.dtos.responses.BaseResponse;
@@ -14,9 +14,11 @@ import com.wanpos.handler.InternalServerError;
 import com.wanpos.helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -38,7 +40,11 @@ public class UsersServiceImpl implements UsersService {
             newUser.setUsername(request.getUsername());
             newUser.setFullname(request.getFullname());
             newUser.setEmail(request.getEmail());
-            newUser.setPassword(request.getPassword());
+
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            String passEncode = bCryptPasswordEncoder.encode(request.getPassword());
+
+            newUser.setPassword(passEncode);
             newUser.setRole(RoleConst.ADMIN.toString());
             newUser.setUuid(UUID.randomUUID().toString());
             newUser.setStatus(StatusConst.ACTIVE.toString());
@@ -60,7 +66,18 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public BaseResponse usersLogin(UsersLoginRequest request) {
-        return new BaseResponse(HttpStatus.OK.value(), true, "LOGIN_SUCCESS", jwtUtils.generateToken(request.getUsername()));
+        try {
+
+
+            HashMap<String, Object> dataLogin = new HashMap<>();
+            dataLogin.put("access_token", jwtUtils.generateToken(request.getUsername()));
+            dataLogin.put("refresh_token", "");
+            dataLogin.put("fullname", request.getUsername());
+
+            return new BaseResponse(HttpStatus.OK.value(), true, "LOGIN_SUCCESS", dataLogin);
+        } catch (Exception e) {
+            return InternalServerError.InternalServerError(e);
+        }
     }
 
 }

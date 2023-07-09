@@ -1,4 +1,4 @@
-package com.wanpos.app.handler;
+package com.wanpos.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wanpos.app.dtos.responses.BaseResponse;
