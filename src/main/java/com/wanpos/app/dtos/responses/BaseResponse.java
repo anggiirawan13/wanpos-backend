@@ -13,6 +13,9 @@ public class BaseResponse {
     @JsonProperty(namespace = "status_code")
     private int statusCode;
 
+    @JsonProperty(namespace = "success")
+    private boolean success;
+
     @JsonProperty(namespace = "messages")
     private String messages;
 

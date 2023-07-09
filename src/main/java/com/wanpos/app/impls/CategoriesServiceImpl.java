@@ -35,7 +35,7 @@ public class CategoriesServiceImpl implements CategoriesService {
         try {
             CategoriesEntity oldCategory = categoriesRepository.getCategoryByCategoryCode(request.getCategoryCode());
             if (NullEmptyChecker.isNotNullOrEmpty(oldCategory)) {
-                return new BaseResponse(HttpStatus.CONFLICT.value(), ResponseMessagesConst.ALREADY_EXIST.toString(), null);
+                return new BaseResponse(HttpStatus.CONFLICT.value(), false, ResponseMessagesConst.ALREADY_EXIST.toString(), null);
             }
 
             CategoriesEntity newCategory = new CategoriesEntity();
@@ -53,7 +53,7 @@ public class CategoriesServiceImpl implements CategoriesService {
 
             CategoriesEntity category = categoriesRepository.save(newCategory);
 
-            return new BaseResponse(HttpStatus.CREATED.value(), ResponseMessagesConst.INSERT_SUCCESS.toString(), category);
+            return new BaseResponse(HttpStatus.CREATED.value(), true, ResponseMessagesConst.INSERT_SUCCESS.toString(), category);
         } catch (Exception e) {
             return InternalServerError.InternalServerError(e);
         }
@@ -64,7 +64,7 @@ public class CategoriesServiceImpl implements CategoriesService {
         try {
             CategoriesEntity oldCategory = categoriesRepository.getCategoryByUUID(request.getUuid());
             if (NullEmptyChecker.isNullOrEmpty(oldCategory)) {
-                return new BaseResponse(HttpStatus.NOT_FOUND.value(), ResponseMessagesConst.DATA_NOT_FOUND.toString(), null);
+                return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString(), null);
             }
 
             CategoriesEntity updateCategory = categoriesRepository.getCategoryByUUID(request.getUuid());
@@ -79,7 +79,7 @@ public class CategoriesServiceImpl implements CategoriesService {
 
             CategoriesEntity category = categoriesRepository.save(updateCategory);
 
-            return new BaseResponse(HttpStatus.OK.value(), ResponseMessagesConst.UPDATE_SUCCESS.toString(), category);
+            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.UPDATE_SUCCESS.toString(), category);
         } catch (Exception e) {
             return InternalServerError.InternalServerError(e);
         }
@@ -90,12 +90,12 @@ public class CategoriesServiceImpl implements CategoriesService {
         try {
             CategoriesEntity oldCategory = categoriesRepository.getCategoryByUUID(uuid);
             if (NullEmptyChecker.isNullOrEmpty(oldCategory)) {
-                return new BaseResponse(HttpStatus.NOT_FOUND.value(), ResponseMessagesConst.DATA_NOT_FOUND.toString(), null);
+                return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString(), null);
             }
 
             categoriesRepository.delete(oldCategory);
 
-            return new BaseResponse(HttpStatus.OK.value(), ResponseMessagesConst.UPDATE_SUCCESS.toString(), null);
+            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.UPDATE_SUCCESS.toString(), null);
         } catch (Exception e) {
             return InternalServerError.InternalServerError(e);
         }
@@ -107,7 +107,7 @@ public class CategoriesServiceImpl implements CategoriesService {
             Pageable pageable = PageRequest.of(page, limit);
             Page<CategoriesEntity> listCategory = categoriesRepository.findAll(pageable);
 
-            return new BaseResponse(HttpStatus.OK.value(), ResponseMessagesConst.DATA_FOUND.toString(), listCategory.toList());
+            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listCategory.toList());
         } catch (Exception e) {
             return InternalServerError.InternalServerError(e);
         }
@@ -118,7 +118,7 @@ public class CategoriesServiceImpl implements CategoriesService {
         try {
             CategoriesEntity listCategory = categoriesRepository.getCategoryByUUID(uuid);
 
-            return new BaseResponse(HttpStatus.OK.value(), ResponseMessagesConst.DATA_FOUND.toString(), listCategory);
+            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listCategory);
         } catch (Exception e) {
             return InternalServerError.InternalServerError(e);
         }

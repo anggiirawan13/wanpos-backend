@@ -8,21 +8,12 @@ import java.io.Serializable;
 
 @Data
 @NonNull
-public class UsersRegisterRequest implements Serializable {
+public class UsersLoginRequest implements Serializable {
 
     @JsonProperty(value = "username")
     private String username;
 
-    @JsonProperty(value = "fullname")
-    private String fullname;
-
-    @JsonProperty(value = "email")
-    private String email;
-
     @JsonProperty(value = "password")
     private String password;
-
-    @JsonProperty(value = "retype_password")
-    private String retypePassword;
 
 }

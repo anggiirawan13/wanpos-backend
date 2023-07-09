@@ -13,7 +13,7 @@ public class InternalServerError {
     public static BaseResponse InternalServerError(Exception e) {
         logger.log(Level.SEVERE, e.toString());
 
-        return new BaseResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "INTERNAL_SERVER_ERROR", null);
+        return new BaseResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), false, "INTERNAL_SERVER_ERROR", null);
     }
 
 }

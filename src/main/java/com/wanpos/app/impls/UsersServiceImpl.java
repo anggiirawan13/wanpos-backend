@@ -1,5 +1,7 @@
 package com.wanpos.app.impls;
 
+import com.wanpos.app.dtos.requests.UsersLoginRequest;
+import com.wanpos.app.jwt.JWTUtils;
 import com.wanpos.app.repositories.UsersRepository;
 import com.wanpos.app.dtos.requests.UsersRegisterRequest;
 import com.wanpos.app.dtos.responses.BaseResponse;
@@ -15,9 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.UUID;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
@@ -26,12 +26,16 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     private UsersRepository usersRepository;
 
+    @Autowired
+    private JWTUtils jwtUtils;
+
     private Logger logger;
 
     @Override
     public BaseResponse usersRegister(UsersRegisterRequest request) {
         try {
             UsersEntity newUser = new UsersEntity();
+            newUser.setUsername(request.getUsername());
             newUser.setFullname(request.getFullname());
             newUser.setEmail(request.getEmail());
             newUser.setPassword(request.getPassword());
@@ -48,9 +52,15 @@ public class UsersServiceImpl implements UsersService {
 
             UsersEntity user = usersRepository.save(newUser);
 
-            return new BaseResponse(HttpStatus.CREATED.value(), ResponseMessagesConst.INSERT_SUCCESS.toString(), user);
+            return new BaseResponse(HttpStatus.CREATED.value(), true, ResponseMessagesConst.INSERT_SUCCESS.toString(), user);
         } catch (Exception e) {
             return InternalServerError.InternalServerError(e);
         }
     }
+
+    @Override
+    public BaseResponse usersLogin(UsersLoginRequest request) {
+        return new BaseResponse(HttpStatus.OK.value(), true, "LOGIN_SUCCESS", jwtUtils.generateToken(request.getUsername()));
+    }
+
 }

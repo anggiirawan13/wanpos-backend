@@ -58,7 +58,7 @@ public class ProductsServiceImpl implements ProductsService {
 
             List<ProductsEntity> listNewProduct = productsRepository.saveAll(listProduct);
 
-            return new BaseResponse(HttpStatus.CREATED.value(), ResponseMessagesConst.INSERT_SUCCESS.toString(), listNewProduct);
+            return new BaseResponse(HttpStatus.CREATED.value(), true, ResponseMessagesConst.INSERT_SUCCESS.toString(), listNewProduct  );
         } catch (Exception e) {
             return InternalServerError.InternalServerError(e);
         }
@@ -69,7 +69,7 @@ public class ProductsServiceImpl implements ProductsService {
         try {
             ProductsEntity oldProduct = productsRepository.getProductByUUID(request.getUuid());
             if (NullEmptyChecker.isNullOrEmpty(oldProduct)) {
-                return new BaseResponse(HttpStatus.NOT_FOUND.value(), ResponseMessagesConst.DATA_NOT_FOUND.toString(), null);
+                return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString(), null);
             }
 
             ProductsEntity updateProduct = productsRepository.getProductByUUID(request.getUuid());
@@ -86,7 +86,7 @@ public class ProductsServiceImpl implements ProductsService {
 
             ProductsEntity product = productsRepository.save(updateProduct);
 
-            return new BaseResponse(HttpStatus.OK.value(), ResponseMessagesConst.UPDATE_SUCCESS.toString(), product);
+            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.UPDATE_SUCCESS.toString(), product);
         } catch (Exception e) {
             return InternalServerError.InternalServerError(e);
         }
@@ -97,12 +97,12 @@ public class ProductsServiceImpl implements ProductsService {
         try {
             ProductsEntity oldProduct = productsRepository.getProductByUUID(uuid);
             if (NullEmptyChecker.isNullOrEmpty(oldProduct)) {
-                return new BaseResponse(HttpStatus.NOT_FOUND.value(), ResponseMessagesConst.DATA_NOT_FOUND.toString(), null);
+                return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString(), null);
             }
 
             productsRepository.delete(oldProduct);
 
-            return new BaseResponse(HttpStatus.OK.value(), ResponseMessagesConst.UPDATE_SUCCESS.toString(), null);
+            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.UPDATE_SUCCESS.toString(), null);
         } catch (Exception e) {
             return InternalServerError.InternalServerError(e);
         }
@@ -114,7 +114,7 @@ public class ProductsServiceImpl implements ProductsService {
             Pageable pageable = PageRequest.of(page, limit);
             Page<ProductsEntity> listProduct = productsRepository.findAll(pageable);
 
-            return new BaseResponse(HttpStatus.OK.value(), ResponseMessagesConst.DATA_FOUND.toString(), listProduct.toList());
+            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listProduct.toList());
         } catch (Exception e) {
             return InternalServerError.InternalServerError(e);
         }
@@ -125,7 +125,7 @@ public class ProductsServiceImpl implements ProductsService {
         try {
             ProductsEntity listProduct = productsRepository.getProductByUUID(uuid);
 
-            return new BaseResponse(HttpStatus.OK.value(), ResponseMessagesConst.DATA_FOUND.toString(), listProduct);
+            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listProduct);
         } catch (Exception e) {
             return InternalServerError.InternalServerError(e);
         }
