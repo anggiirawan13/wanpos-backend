@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CategoriesRepository extends PagingAndSortingRepository<CategoriesEntity, Long> {
+public interface CategoriesRepository extends JpaRepository<CategoriesEntity, Long> {
 
     @Query(value = "SELECT * FROM categories WHERE uuid = :uuid", nativeQuery = true)
     CategoriesEntity getCategoryByUUID(@Param("uuid") String uuid);

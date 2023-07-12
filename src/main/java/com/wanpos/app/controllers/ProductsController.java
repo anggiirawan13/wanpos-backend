@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/products")
 public class ProductsController {
@@ -32,8 +33,8 @@ public class ProductsController {
     }
 
     @GetMapping
-    private BaseResponse getProducts(@RequestParam("page") int page, @RequestParam("limit") int limit) {
-        return productsService.getProducts(page, limit);
+    private BaseResponse getProducts(@RequestParam(value = "page", required = false, defaultValue = "0") int page, @RequestParam(value = "limit", required = false, defaultValue = "0") int limit, @RequestParam(value = "search", required = false, defaultValue = "") String search) {
+        return productsService.getProducts(page, limit, search);
     }
 
     @GetMapping(value = "/{uuid}")

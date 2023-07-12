@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -104,10 +105,15 @@ public class CategoriesServiceImpl implements CategoriesService {
     @Override
     public BaseResponse getCategories(int page, int limit) {
         try {
-            Pageable pageable = PageRequest.of(page, limit);
-            Page<CategoriesEntity> listCategory = categoriesRepository.findAll(pageable);
+            List<CategoriesEntity> listCategory;
+            if (NullEmptyChecker.isNullOrEmpty(page) || NullEmptyChecker.isNullOrEmpty(limit)) {
+                listCategory = categoriesRepository.findAll();
+            } else {
+                Pageable pageable = PageRequest.of(page, limit);
+                listCategory = categoriesRepository.findAll(pageable).toList();
+            }
 
-            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listCategory.toList());
+            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listCategory);
         } catch (Exception e) {
             return InternalServerError.InternalServerError(e);
         }

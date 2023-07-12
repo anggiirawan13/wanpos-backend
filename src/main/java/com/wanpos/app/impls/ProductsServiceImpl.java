@@ -12,7 +12,6 @@ import com.wanpos.handler.InternalServerError;
 import com.wanpos.helper.DateHelper;
 import com.wanpos.helper.NullEmptyChecker;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -109,12 +108,19 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     @Override
-    public BaseResponse getProducts(int page, int limit) {
+    public BaseResponse getProducts(int page, int limit, String search) {
         try {
-            Pageable pageable = PageRequest.of(page, limit);
-            Page<ProductsEntity> listProduct = productsRepository.findAll(pageable);
+            List<ProductsEntity> listProduct;
+            if (NullEmptyChecker.isNullOrEmpty(page) || NullEmptyChecker.isNullOrEmpty(limit)) {
+                listProduct = productsRepository.findAll();
+            } else if (NullEmptyChecker.isNullOrEmpty(search)) {
+                Pageable pageable = PageRequest.of(page, limit);
+                listProduct = productsRepository.findAll(pageable).toList();
+            } else {
+                listProduct = productsRepository.getProductByProductCodeOrName(search);
+            }
 
-            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listProduct.toList());
+            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listProduct);
         } catch (Exception e) {
             return InternalServerError.InternalServerError(e);
         }

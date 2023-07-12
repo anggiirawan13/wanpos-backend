@@ -9,6 +9,7 @@ import com.wanpos.app.impls.UsersServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/categories")
 public class CategoriesController {
@@ -32,7 +33,7 @@ public class CategoriesController {
     }
 
     @GetMapping
-    private BaseResponse getCategories(@RequestParam("page") int page, @RequestParam("limit") int limit) {
+    private BaseResponse getCategories(@RequestParam(value = "page", required = false, defaultValue = "0") int page, @RequestParam(value = "limit", required = false, defaultValue = "0") int limit) {
         return categoriesService.getCategories(page, limit);
     }
 

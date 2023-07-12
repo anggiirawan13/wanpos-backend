@@ -14,7 +14,7 @@ public interface ProductsService {
 
     BaseResponse deleteProductByUUID(String uuid);
 
-    BaseResponse getProducts(int page, int limit);
+    BaseResponse getProducts(int page, int limit, String search);
 
     BaseResponse getProductByUUID(String uuid);
 
