@@ -22,7 +22,7 @@ public class UsersEntity extends BaseEntity {
     @JsonProperty("email")
     private String email;
 
-    @Column(name = "username", nullable = false, length = 50)
+    @Column(name = "username", unique = true, nullable = false, length = 50)
     @JsonProperty("username")
     private String username;
 

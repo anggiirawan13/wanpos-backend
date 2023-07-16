@@ -30,6 +30,10 @@ public class ProductsEntity extends BaseEntity {
     @JsonProperty("price")
     private double price;
 
+    @Column(name = "stock", nullable = false, length = 4)
+    @JsonProperty("stock")
+    private int stock;
+
     @Column(name = "category_id", nullable = false)
     @JsonProperty("category_id")
     private Long categoryID;

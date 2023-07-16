@@ -81,7 +81,11 @@ public class SecurityAPIConfiguration extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("http://localhost:8000");
-        corsConfiguration.addAllowedMethod(Arrays.asList("POST", "GET", "PUT", "DELETE").toString());
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("GET");
+        corsConfiguration.addAllowedMethod("POST");
+        corsConfiguration.addAllowedMethod("PUT");
+        corsConfiguration.addAllowedMethod("DELETE");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
