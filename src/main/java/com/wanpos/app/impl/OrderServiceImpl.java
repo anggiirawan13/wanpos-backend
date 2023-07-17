@@ -1,6 +1,6 @@
 package com.wanpos.app.impl;
 
-import com.wanpos.app.dto.request.OrderDetailRequest;
+import com.wanpos.app.dto.request.OrderItemRequest;
 import com.wanpos.app.dto.request.OrderInsertRequest;
 import com.wanpos.app.dto.request.OrderUpdateRequest;
 import com.wanpos.app.dto.response.BaseResponse;
@@ -38,33 +38,33 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public BaseResponse saveOrder(OrderInsertRequest listOrderRequest) {
         try {
+            OrderEntity newOrder = new OrderEntity();
+            newOrder.setUuid(UUID.randomUUID().toString());
+            newOrder.setUsername(listOrderRequest.getUsername());
+            newOrder.setSubTotal(listOrderRequest.getSubTotal());
+            newOrder.setTotalNet(listOrderRequest.getTotalNet());
+            newOrder.setTax(listOrderRequest.getTax());
+            newOrder.setServiceCharge(listOrderRequest.getServiceCharge());
+            newOrder.setStatus(StatusConst.WAITING.toString());
+
+            Timestamp dateNow = DateHelper.getTimestampNow();
+
+            newOrder.setCreatedAt(dateNow);
+            newOrder.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+            newOrder.setModifiedAt(dateNow);
+            newOrder.setModifiedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+
             List<OrderItemEntity> listItem = new ArrayList<>();
-                OrderEntity newOrder = new OrderEntity();
-                newOrder.setUuid(UUID.randomUUID().toString());
-                newOrder.setUsername(listOrderRequest.getUsername());
-                newOrder.setSubTotal(listOrderRequest.getSubTotal());
-                newOrder.setTotalNet(listOrderRequest.getTotalNet());
-                newOrder.setTax(listOrderRequest.getTax());
-                newOrder.setServiceCharge(listOrderRequest.getServiceCharge());
-                newOrder.setStatus(StatusConst.WAITING.toString());
+            for (OrderItemRequest item : listOrderRequest.getItem()) {
+                OrderItemEntity itemEntity = new OrderItemEntity();
+                itemEntity.setUuid(newOrder.getUuid());
+                itemEntity.setProductCode(item.getProductCode());
+                itemEntity.setQuantity(item.getQuantity());
+                itemEntity.setTotalPrice(item.getTotalPrice());
+                itemEntity.setPrice(item.getPrice());
 
-                Timestamp dateNow = DateHelper.getTimestampNow();
-
-                newOrder.setCreatedAt(dateNow);
-                newOrder.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
-                newOrder.setModifiedAt(dateNow);
-                newOrder.setModifiedBy(SecurityContextHolder.getContext().getAuthentication().getName());
-
-                for (OrderDetailRequest item : listOrderRequest.getItem()) {
-                    OrderItemEntity itemEntity = new OrderItemEntity();
-                    itemEntity.setUuid(newOrder.getUuid());
-                    itemEntity.setProductCode(item.getProductCode());
-                    itemEntity.setQuantity(item.getQuantity());
-                    itemEntity.setTotalPrice(item.getTotalPrice());
-                    itemEntity.setPrice(item.getPrice());
-
-                    listItem.add(itemEntity);
-                }
+                listItem.add(itemEntity);
+            }
 
             orderRepository.save(newOrder);
             orderDetailRepository.saveAll(listItem);

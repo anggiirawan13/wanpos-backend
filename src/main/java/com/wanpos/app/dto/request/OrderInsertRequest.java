@@ -26,7 +26,7 @@ public class OrderInsertRequest {
     private double serviceCharge;
 
     @JsonProperty("item")
-    private List<OrderDetailRequest> item;
+    private List<OrderItemRequest> item;
 
 }
 

@@ -6,7 +6,7 @@ import lombok.NonNull;
 
 @Data
 @NonNull
-public class OrderDetailRequest {
+public class OrderItemRequest {
 
     @JsonProperty("product_code")
     private String productCode;
