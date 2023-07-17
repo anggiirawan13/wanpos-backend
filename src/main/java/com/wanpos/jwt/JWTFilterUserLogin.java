@@ -1,6 +1,6 @@
 package com.wanpos.jwt;
 
-import com.wanpos.app.impls.UsersDetailLoginServiceImpl;
+import com.wanpos.app.impl.UserDetailLoginServiceImpl;
 import com.wanpos.helper.NullEmptyChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,17 +16,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.wanpos.configuration.ConstantaVariableConfiguration.HEADER_AUTH;
-import static com.wanpos.configuration.ConstantaVariableConfiguration.TOKEN_PREFIX;
+import static com.wanpos.constanta.JWTConst.HEADER_AUTH;
+import static com.wanpos.constanta.JWTConst.TOKEN_PREFIX;
 
 @Service
 public class JWTFilterUserLogin extends OncePerRequestFilter {
 
     @Autowired
-    private JWTUtils jwtUtils;
+    private JWTUtil jwtUtil;
 
     @Autowired
-    private UsersDetailLoginServiceImpl usersDetailLoginServiceImpl;
+    private UserDetailLoginServiceImpl userDetailLoginServiceImpl;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -36,13 +36,13 @@ public class JWTFilterUserLogin extends OncePerRequestFilter {
 
         if (NullEmptyChecker.isNotNullOrEmpty(headerAuth) && headerAuth.startsWith(TOKEN_PREFIX)) {
             token = headerAuth.substring(7);
-            username = jwtUtils.extractUsername(token, request);
+            username = jwtUtil.extractUsername(token, request);
         }
 
         if (NullEmptyChecker.isNotNullOrEmpty(username) && NullEmptyChecker.isNullOrEmpty(SecurityContextHolder.getContext().getAuthentication())) {
-            UserDetails userDetails = usersDetailLoginServiceImpl.loadUserByUsername(username);
+            UserDetails userDetails = userDetailLoginServiceImpl.loadUserByUsername(username);
 
-            if (jwtUtils.isValidToken(token, userDetails, request)) {
+            if (jwtUtil.isValidToken(token, userDetails, request)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
