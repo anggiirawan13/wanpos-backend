@@ -8,10 +8,22 @@ public enum ResponseMessagesConst {
             return "INSERT_SUCCESS";
         }
     },
+    INSERT_FAILED {
+        @Override
+        public String toString() {
+            return "INSERT_FAILED";
+        }
+    },
     UPDATE_SUCCESS {
         @Override
         public String toString() {
             return "UPDATE_SUCCESS";
+        }
+    },
+    UPDATE_FAILED {
+        @Override
+        public String toString() {
+            return "UPDATE_FAILED";
         }
     },
     DATA_FOUND {

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/auth")
+@RequestMapping(value = "/user")
 public class UserController {
 
     @Autowired
@@ -35,6 +35,16 @@ public class UserController {
         }
 
         return userServiceImpl.userLogin(request);
+    }
+
+    @GetMapping
+    private BaseResponse getUser(@RequestParam(value = "page", required = false, defaultValue = "0") int page, @RequestParam(value = "limit", required = false, defaultValue = "0") int limit, @RequestParam(value = "search", required = false, defaultValue = "") String search) {
+        return userServiceImpl.getUser(page, limit, search);
+    }
+
+    @GetMapping("/{uuid}")
+    private BaseResponse getUserByUUID(@PathVariable(value = "uuid") String uuid) {
+        return userServiceImpl.getUserByUUID(uuid);
     }
 
 }

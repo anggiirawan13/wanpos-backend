@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OrderDetailRepository extends JpaRepository<OrderItemEntity, Long> {
 
-    @Query(value = "SELECT * FROM order_item WHERE uuid = :uuid", nativeQuery = true)
-    OrderItemEntity getOrderDetailByUUID(@Param("uuid") String uuid);
+    @Query(value = "SELECT * FROM order_item WHERE uuid = :uuid AND status = 'active'", nativeQuery = true)
+    OrderItemEntity findByUUID(@Param("uuid") String uuid);
 
 }

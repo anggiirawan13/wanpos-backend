@@ -8,6 +8,9 @@ import lombok.NonNull;
 @NonNull
 public class ProductInsertRequest {
 
+    @JsonProperty(value = "uuid")
+    private String uuid;
+
     @JsonProperty(value = "product_code")
     private String productCode;
 
@@ -20,7 +23,13 @@ public class ProductInsertRequest {
     @JsonProperty(value = "price")
     private double price;
 
+    @JsonProperty(value = "stock")
+    private int stock;
+
     @JsonProperty(value = "category_id")
-    private Long categoryID;
+    private String categoryID;
+
+    @JsonProperty(value = "status")
+    private String status;
 
 }

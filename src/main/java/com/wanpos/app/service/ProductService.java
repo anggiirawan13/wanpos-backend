@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    BaseResponse saveProduct(List<ProductInsertRequest> request);
+    BaseResponse saveProduct(ProductInsertRequest request);
 
     BaseResponse updateProductByUUID(ProductUpdateRequest request);
 

@@ -40,6 +40,6 @@ public class ProductEntity extends BaseEntity {
 
     @Column(name = "category_id", nullable = false)
     @JsonProperty("category_id")
-    private Long categoryID;
+    private String categoryID;
 
 }

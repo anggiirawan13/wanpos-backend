@@ -19,4 +19,7 @@ public class CategoryUpdateRequest implements Serializable {
     @JsonProperty(value = "category_name")
     private String categoryName;
 
+    @JsonProperty(value = "status")
+    private String status;
+
 }

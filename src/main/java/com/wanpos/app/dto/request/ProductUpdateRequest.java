@@ -23,7 +23,13 @@ public class ProductUpdateRequest {
     @JsonProperty(value = "price")
     private double price;
 
+    @JsonProperty(value = "stock")
+    private int stock;
+
     @JsonProperty(value = "category_id")
     private String categoryID;
+
+    @JsonProperty(value = "status")
+    private String status;
 
 }

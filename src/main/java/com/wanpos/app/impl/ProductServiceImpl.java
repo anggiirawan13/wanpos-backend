@@ -12,16 +12,17 @@ import com.wanpos.handler.InternalServerErrorHandler;
 import com.wanpos.helper.DateHelper;
 import com.wanpos.helper.NullEmptyChecker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -29,59 +30,66 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    private Logger logger;
-
     @Override
-    public BaseResponse saveProduct(List<ProductInsertRequest> listProductRequest) {
+    public BaseResponse saveProduct(ProductInsertRequest productRequest) {
         try {
-            List<ProductEntity> listProduct = new ArrayList<>();
-            for (ProductInsertRequest prod : listProductRequest) {
-                ProductEntity newProduct = new ProductEntity();
-                newProduct.setUuid(UUID.randomUUID().toString());
-                newProduct.setProductCode(prod.getProductCode());
-                newProduct.setProductName(prod.getProductName());
-                newProduct.setPrice(prod.getPrice());
-                newProduct.setThumbnail(prod.getThumbnail());
-                newProduct.setCategoryID(new Long(prod.getCategoryID()));
+
+            ProductEntity newProduct = new ProductEntity();
+            newProduct.setUuid(UUID.randomUUID().toString());
+            newProduct.setProductCode(productRequest.getProductCode());
+            newProduct.setProductName(productRequest.getProductName());
+            newProduct.setPrice(productRequest.getPrice());
+            newProduct.setStock(productRequest.getStock());
+            newProduct.setThumbnail(productRequest.getThumbnail());
+            newProduct.setCategoryID(productRequest.getCategoryID());
+
+            if (productRequest.getStatus().equalsIgnoreCase("active")) {
                 newProduct.setStatus(StatusConst.ACTIVE.toString());
-
-                Timestamp dateNow = DateHelper.getTimestampNow();
-
-                newProduct.setCreatedAt(dateNow);
-                newProduct.setCreatedBy("admin");
-                newProduct.setModifiedAt(dateNow);
-                newProduct.setModifiedBy("admin");
-
-                listProduct.add(newProduct);
+            } else {
+                newProduct.setStatus(StatusConst.INACTIVE.toString());
             }
 
-            List<ProductEntity> listNewProduct = productRepository.saveAll(listProduct);
+            Timestamp dateNow = DateHelper.getTimestampNow();
 
-            return new BaseResponse(HttpStatus.CREATED.value(), true, ResponseMessagesConst.INSERT_SUCCESS.toString(), listNewProduct  );
+            newProduct.setCreatedAt(dateNow);
+            newProduct.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+            newProduct.setModifiedAt(dateNow);
+            newProduct.setModifiedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+
+            ProductEntity listNewProduct = productRepository.save(newProduct);
+
+            return new BaseResponse(HttpStatus.CREATED.value(), true, ResponseMessagesConst.INSERT_SUCCESS.toString(), listNewProduct);
         } catch (Exception e) {
             return InternalServerErrorHandler.InternalServerError(e);
         }
     }
 
     @Override
-    public BaseResponse updateProductByUUID(ProductUpdateRequest request) {
+    public BaseResponse updateProductByUUID(ProductUpdateRequest productRequest) {
         try {
-            ProductEntity oldProduct = productRepository.getProductByUUID(request.getUuid());
+            ProductEntity oldProduct = productRepository.findByUUID(productRequest.getUuid());
             if (NullEmptyChecker.isNullOrEmpty(oldProduct)) {
                 return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString(), null);
             }
 
-            ProductEntity updateProduct = productRepository.getProductByUUID(request.getUuid());
-            updateProduct.setProductCode(request.getProductCode());
-            updateProduct.setProductName(request.getProductName());
-            updateProduct.setPrice(request.getPrice());
-            updateProduct.setThumbnail(request.getThumbnail());
-            updateProduct.setStatus(StatusConst.ACTIVE.toString());
+            ProductEntity updateProduct = productRepository.findByUUID(productRequest.getUuid());
+            updateProduct.setProductCode(productRequest.getProductCode());
+            updateProduct.setProductName(productRequest.getProductName());
+            updateProduct.setPrice(productRequest.getPrice());
+            updateProduct.setThumbnail(productRequest.getThumbnail());
+            updateProduct.setStock(productRequest.getStock());
+            updateProduct.setCategoryID(productRequest.getCategoryID());
+
+            if (productRequest.getStatus().equalsIgnoreCase("active")) {
+                updateProduct.setStatus(StatusConst.ACTIVE.toString());
+            } else {
+                updateProduct.setStatus(StatusConst.INACTIVE.toString());
+            }
 
             Timestamp dateNow = DateHelper.getTimestampNow();
 
             updateProduct.setModifiedAt(dateNow);
-            updateProduct.setModifiedBy("admin");
+            updateProduct.setModifiedBy(SecurityContextHolder.getContext().getAuthentication().getName());
 
             ProductEntity product = productRepository.save(updateProduct);
 
@@ -94,7 +102,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public BaseResponse deleteProductByUUID(String uuid) {
         try {
-            ProductEntity oldProduct = productRepository.getProductByUUID(uuid);
+            ProductEntity oldProduct = productRepository.findByUUID(uuid);
             if (NullEmptyChecker.isNullOrEmpty(oldProduct)) {
                 return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString(), null);
             }
@@ -111,16 +119,27 @@ public class ProductServiceImpl implements ProductService {
     public BaseResponse getProduct(int page, int limit, String search) {
         try {
             List<ProductEntity> listProduct;
-            if (NullEmptyChecker.isNullOrEmpty(page) || NullEmptyChecker.isNullOrEmpty(limit)) {
+            HashMap<String, Object> addEntity = new HashMap<>();
+            if (page < 0 || NullEmptyChecker.isNullOrEmpty(limit)) {
                 listProduct = productRepository.findAll();
             } else if (NullEmptyChecker.isNullOrEmpty(search)) {
                 Pageable pageable = PageRequest.of(page, limit);
-                listProduct = productRepository.findAll(pageable).toList();
+                Page<ProductEntity> pageProduct = productRepository.findAll(pageable);
+                listProduct = pageProduct.toList();
+
+                addEntity.put("totalPage", pageProduct.getTotalPages());
+                addEntity.put("totalData", pageProduct.getTotalElements());
+                addEntity.put("numberOfData", pageProduct.getNumberOfElements());
+                addEntity.put("number", pageProduct.getNumber());
             } else {
-                listProduct = productRepository.getProductByProductCodeOrName(search);
+                listProduct = productRepository.findByProductCodeOrName(search);
             }
 
-            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listProduct);
+            if (NullEmptyChecker.isNotNullOrEmpty(listProduct)) {
+                return new BaseResponse(HttpStatus.FOUND.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listProduct, addEntity);
+            }
+
+            return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString());
         } catch (Exception e) {
             return InternalServerErrorHandler.InternalServerError(e);
         }
@@ -129,9 +148,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public BaseResponse getProductByUUID(String uuid) {
         try {
-            ProductEntity listProduct = productRepository.getProductByUUID(uuid);
+            ProductEntity listProduct = productRepository.findByUUID(uuid);
 
-            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listProduct);
+            if (NullEmptyChecker.isNotNullOrEmpty(listProduct)) {
+                return new BaseResponse(HttpStatus.FOUND.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listProduct);
+            }
+
+            return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString());
         } catch (Exception e) {
             return InternalServerErrorHandler.InternalServerError(e);
         }

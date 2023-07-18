@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Data
 @NonNull
-public class UserRegisterRequest implements Serializable {
+public class UserUpdateRequest implements Serializable {
 
     @JsonProperty(value = "username")
     private String username;

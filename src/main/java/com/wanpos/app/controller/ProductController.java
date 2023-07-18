@@ -7,8 +7,6 @@ import com.wanpos.app.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/product")
@@ -18,7 +16,7 @@ public class ProductController {
     private ProductServiceImpl productService;
 
     @PostMapping
-    private BaseResponse saveProduct(@RequestBody List<ProductInsertRequest> request) {
+    private BaseResponse saveProduct(@RequestBody ProductInsertRequest request) {
         return productService.saveProduct(request);
     }
 

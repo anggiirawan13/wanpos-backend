@@ -78,12 +78,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public BaseResponse updateOrderByUUID(OrderUpdateRequest request) {
         try {
-            OrderEntity oldOrder = orderRepository.getOrderByUUID(request.getUuid());
+            OrderEntity oldOrder = orderRepository.findByUUID(request.getUuid());
             if (NullEmptyChecker.isNullOrEmpty(oldOrder)) {
                 return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString(), null);
             }
 
-            OrderEntity updateOrder = orderRepository.getOrderByUUID(request.getUuid());
+            OrderEntity updateOrder = orderRepository.findByUUID(request.getUuid());
             updateOrder.setUsername(request.getUsername());
             updateOrder.setStatus(request.getStatus());
 
@@ -103,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public BaseResponse deleteOrderByUUID(String uuid) {
         try {
-            OrderEntity oldOrder = orderRepository.getOrderByUUID(uuid);
+            OrderEntity oldOrder = orderRepository.findByUUID(uuid);
             if (NullEmptyChecker.isNullOrEmpty(oldOrder)) {
                 return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString(), null);
             }
@@ -126,10 +126,14 @@ public class OrderServiceImpl implements OrderService {
                 Pageable pageable = PageRequest.of(page, limit);
                 listOrder = orderRepository.findAll(pageable).toList();
             } else {
-                listOrder = orderRepository.getOrderByUsername(search);
+                listOrder = orderRepository.findByUsername(search);
             }
 
-            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listOrder);
+            if (NullEmptyChecker.isNotNullOrEmpty(listOrder)) {
+                return new BaseResponse(HttpStatus.FOUND.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listOrder);
+            }
+
+            return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString());
         } catch (Exception e) {
             return InternalServerErrorHandler.InternalServerError(e);
         }
@@ -138,9 +142,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public BaseResponse getOrderByUUID(String uuid) {
         try {
-            OrderEntity listOrder = orderRepository.getOrderByUUID(uuid);
+            OrderEntity listOrder = orderRepository.findByUUID(uuid);
 
-            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listOrder);
+            if (NullEmptyChecker.isNotNullOrEmpty(listOrder)) {
+                return new BaseResponse(HttpStatus.FOUND.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listOrder);
+            }
+
+            return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString());
         } catch (Exception e) {
             return InternalServerErrorHandler.InternalServerError(e);
         }

@@ -10,6 +10,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BaseResponse {
 
+    public BaseResponse(int statusCode, boolean success, String messages) {
+        this.statusCode = statusCode;
+        this.success = success;
+        this.messages = messages;
+    }
+
+    public BaseResponse(int statusCode, boolean success, String messages, Object result) {
+        this.statusCode = statusCode;
+        this.success = success;
+        this.messages = messages;
+        this.result = result;
+    }
+
     @JsonProperty(namespace = "status_code")
     private int statusCode;
 
@@ -21,5 +34,8 @@ public class BaseResponse {
 
     @JsonProperty(namespace = "result")
     private Object result;
+
+    @JsonProperty(namespace = "additional_entity")
+    private Object additionalEntity;
 
 }
