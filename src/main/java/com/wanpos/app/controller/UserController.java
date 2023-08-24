@@ -4,12 +4,14 @@ import com.wanpos.app.dto.request.UserLoginRequest;
 import com.wanpos.app.dto.request.UserRegisterRequest;
 import com.wanpos.app.dto.response.BaseResponse;
 import com.wanpos.app.impl.UserServiceImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "user")
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/user")

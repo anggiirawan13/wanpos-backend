@@ -3,24 +3,26 @@ package com.wanpos.app.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "order_item")
-public class OrderItemEntity extends BaseEntity {
+@Table(name = "checkout_item")
+public class CheckoutItemEntity extends BaseEntity {
 
-    @Column(name = "company_code", nullable = false, length = 30)
-    @JsonProperty("company_code")
-    private String companyCode;
+    @Column(name = "checkout_number", nullable = false, length = 20)
+    @JsonProperty("checkout_number")
+    private String checkoutNumber;
 
-    @Column(name = "order_number", nullable = false, length = 20)
-    @JsonProperty("order_number")
-    private String orderNumber;
+    @Column(name = "product_code", nullable = false, length = 20)
+    @JsonProperty("product_code")
+    private String productCode;
 
     @Column(name = "quantity", nullable = false, length = 11)
     @JsonProperty("quantity")

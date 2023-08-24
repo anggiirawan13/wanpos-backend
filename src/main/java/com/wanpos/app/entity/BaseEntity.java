@@ -20,10 +20,6 @@ public class BaseEntity implements Serializable {
     @JsonProperty("uuid")
     private String uuid;
 
-    @Column(name = "status", nullable = false, length = 8)
-    @JsonProperty("status")
-    private String status;
-
     @Column(name = "created_by", nullable = false, length = 20)
     @JsonProperty("created_by")
     private String createdBy;

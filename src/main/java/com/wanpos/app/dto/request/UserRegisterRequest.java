@@ -10,11 +10,14 @@ import java.io.Serializable;
 @NonNull
 public class UserRegisterRequest implements Serializable {
 
+    @JsonProperty(value = "user_code")
+    private String user_code;
+
     @JsonProperty(value = "username")
     private String username;
 
-    @JsonProperty(value = "fullname")
-    private String fullname;
+    @JsonProperty(value = "fullName")
+    private String fullName;
 
     @JsonProperty(value = "email")
     private String email;

@@ -26,20 +26,16 @@ public class ProductEntity extends BaseEntity {
     @JsonProperty("product_name")
     private String productName;
 
-    @Column(name = "thumbnail", length = 50)
-    @JsonProperty("thumbnail")
-    private String thumbnail;
+    @Column(name = "selling_price", nullable = false, length = 11)
+    @JsonProperty("selling_price")
+    private double sellingPrice;
 
-    @Column(name = "price", nullable = false, length = 11)
-    @JsonProperty("price")
-    private double price;
+    @Column(name = "buying_price", nullable = false, length = 11)
+    @JsonProperty("buying_price")
+    private double buyingPrice;
 
     @Column(name = "stock", nullable = false, length = 4)
     @JsonProperty("stock")
     private int stock;
-
-    @Column(name = "category_id", nullable = false)
-    @JsonProperty("category_id")
-    private String categoryID;
 
 }

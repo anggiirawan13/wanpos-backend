@@ -5,12 +5,14 @@ import com.wanpos.handler.JWTAccessDeniedHandler;
 import com.wanpos.handler.JWTAuthenticationEntryPointHandler;
 import com.wanpos.jwt.JWTFilterUserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -23,6 +25,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityAPIConfig extends WebSecurityConfigurerAdapter {
+
+    @Value("${host.client.allowed}")
+    private String hostClientAllowed;
 
     @Autowired
     private UserDetailLoginServiceImpl userDetailLoginServiceImpl;
@@ -59,7 +64,7 @@ public class SecurityAPIConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/user/login", "/user/register")
+                .antMatchers("/user/login", "/user/register", "/swagger-ui/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -74,10 +79,15 @@ public class SecurityAPIConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtFilterUserLogin, UsernamePasswordAuthenticationFilter.class);
     }
 
+    @Override
+    public void configure(WebSecurity webSecurity) {
+        webSecurity.ignoring().antMatchers("/swagger-ui", "/swagger-ui/**", "/v3/api-docs/**");
+    }
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin("http://localhost:8000");
+        corsConfiguration.addAllowedOrigin(hostClientAllowed);
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("GET");
         corsConfiguration.addAllowedMethod("POST");

@@ -40,8 +40,9 @@ public class UserServiceImpl implements UserService {
     public BaseResponse userRegister(UserRegisterRequest request) {
         try {
             UserEntity newUser = new UserEntity();
+            newUser.setUserCode(request.getUser_code());
             newUser.setUsername(request.getUsername());
-            newUser.setFullname(request.getFullname());
+            newUser.setFullName(request.getFullName());
             newUser.setEmail(request.getEmail());
 
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -88,7 +89,7 @@ public class UserServiceImpl implements UserService {
             HashMap<String, Object> dataLogin = new HashMap<>();
             dataLogin.put("access_token", jwtUtil.generateToken(request.getUsername()));
             dataLogin.put("refresh_token", "");
-            dataLogin.put("fullname", user.getFullname());
+            dataLogin.put("fullName", user.getFullName());
 
             if (NullEmptyChecker.isNotNullOrEmpty(dataLogin)) {
                 return new BaseResponse(HttpStatus.OK.value(), true, "LOGIN_SUCCESS", dataLogin);
