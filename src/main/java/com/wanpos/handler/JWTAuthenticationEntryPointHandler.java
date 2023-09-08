@@ -26,11 +26,15 @@ public class JWTAuthenticationEntryPointHandler implements AuthenticationEntryPo
 
         BaseResponse baseResponse;
 
-        String expired = String.valueOf(httpServletRequest.getAttribute("expired"));
-        if (NullEmptyChecker.isNotNullOrEmpty(expired)) {
-            baseResponse = new BaseResponse(HttpStatus.UNAUTHORIZED.value(), false, "EXPIRED_TOKEN", null);
+        if (NullEmptyChecker.isNullOrEmpty(httpServletRequest.getHeader("Authorization"))) {
+            baseResponse = new BaseResponse(HttpStatus.UNAUTHORIZED.value(), false, "TOKEN_REQUIRED", null);
         } else {
-            baseResponse = new BaseResponse(HttpStatus.FORBIDDEN.value(), false, "INVALID_TOKEN", null);
+            String expired = String.valueOf(httpServletRequest.getAttribute("expired"));
+            if (NullEmptyChecker.isNotNullOrEmpty(expired)) {
+                baseResponse = new BaseResponse(HttpStatus.UNAUTHORIZED.value(), false, "EXPIRED_TOKEN", null);
+            } else {
+                baseResponse = new BaseResponse(HttpStatus.FORBIDDEN.value(), false, "INVALID_TOKEN", null);
+            }
         }
 
         ObjectMapper mapper = new ObjectMapper();

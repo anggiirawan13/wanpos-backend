@@ -70,13 +70,9 @@ public class UserServiceImpl implements UserService {
             newUser.setModifiedAt(dateNow);
             newUser.setModifiedBy(SecurityContextHolder.getContext().getAuthentication().getName());
 
-            UserEntity user = userRepository.save(newUser);
+            userRepository.save(newUser);
 
-            if (NullEmptyChecker.isNotNullOrEmpty(user)) {
-                return new BaseResponse(HttpStatus.CREATED.value(), true, ResponseMessagesConst.INSERT_SUCCESS.toString(), user);
-            }
-
-            return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.INSERT_FAILED.toString());
+            return new BaseResponse(HttpStatus.CREATED.value(), true, ResponseMessagesConst.INSERT_SUCCESS.toString());
         } catch (Exception e) {
             return InternalServerErrorHandler.InternalServerError(e);
         }

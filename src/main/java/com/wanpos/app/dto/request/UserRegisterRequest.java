@@ -1,5 +1,6 @@
 package com.wanpos.app.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NonNull;
@@ -8,6 +9,7 @@ import java.io.Serializable;
 
 @Data
 @NonNull
+@JsonAutoDetect
 public class UserRegisterRequest implements Serializable {
 
     @JsonProperty(value = "user_code")

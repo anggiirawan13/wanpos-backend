@@ -1,5 +1,6 @@
 package com.wanpos.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,7 +26,8 @@ public class BaseEntity implements Serializable {
     private String createdBy;
 
     @Column(name = "created_at", nullable = false)
-    @JsonProperty("created_at")
+    @JsonProperty(value = "created_at")
+    @JsonFormat(pattern = "yyyy-mm-dd hh:mm:ss")
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
     private Timestamp createdAt;
 
@@ -34,7 +36,8 @@ public class BaseEntity implements Serializable {
     private String modifiedBy;
 
     @Column(name = "modified_at", nullable = false)
-    @JsonProperty("modified_at")
+    @JsonProperty(value = "modified_at")
+    @JsonFormat(pattern = "yyyy-mm-dd hh:mm:ss")
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
     private Timestamp modifiedAt;
 
