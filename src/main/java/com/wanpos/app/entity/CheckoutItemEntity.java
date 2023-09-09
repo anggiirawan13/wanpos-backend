@@ -3,18 +3,22 @@ package com.wanpos.app.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 import javax.persistence.*;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "checkout_item")
-public class CheckoutItemEntity extends BaseEntity {
+public class CheckoutItemEntity implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "checkout_number", nullable = false, length = 20)
     @JsonProperty("checkout_number")

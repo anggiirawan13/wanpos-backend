@@ -61,7 +61,7 @@ public class CompanyServiceImpl implements CompanyService {
                 return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString());
             }
 
-            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), resultCompany);
+            return new BaseResponse(HttpStatus.FOUND.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), resultCompany);
         } catch (Exception e) {
             return InternalServerErrorHandler.InternalServerError(e);
         }

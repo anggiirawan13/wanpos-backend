@@ -59,7 +59,7 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
                 return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString());
             }
 
-            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listPaymentMethod);
+            return new BaseResponse(HttpStatus.FOUND.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listPaymentMethod);
         } catch (Exception e) {
             return InternalServerErrorHandler.InternalServerError(e);
         }

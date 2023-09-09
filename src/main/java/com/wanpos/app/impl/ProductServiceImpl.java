@@ -26,7 +26,7 @@ public class ProductServiceImpl implements ProductService {
 
     public BaseResponse saveProduct(ProductRequest request) {
         try {
-            ProductEntity productExist = productRepository.findProductByProductCode(request.getProductCode());
+            ProductEntity productExist = productRepository.findByProductCode(request.getProductCode());
             if (productExist != null) {
                 return new BaseResponse(HttpStatus.CONFLICT.value(), false, ResponseMessagesConst.ALREADY_EXIST.toString());
             }
@@ -56,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
 
     public BaseResponse updateProduct(ProductRequest request) {
         try {
-            ProductEntity productExist = productRepository.findProductByProductCode(request.getProductCode());
+            ProductEntity productExist = productRepository.findByProductCode(request.getProductCode());
             if (productExist == null) {
                 return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString());
             }
@@ -85,12 +85,12 @@ public class ProductServiceImpl implements ProductService {
 
     public BaseResponse getProductByProductCode(String code) {
         try {
-            ProductEntity resultProduct = productRepository.findProductByProductCode(code);
+            ProductEntity resultProduct = productRepository.findByProductCode(code);
             if (resultProduct == null) {
                 return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString());
             }
         
-            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), resultProduct);
+            return new BaseResponse(HttpStatus.FOUND.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), resultProduct);
         } catch (Exception e) {
             return InternalServerErrorHandler.InternalServerError(e);
         }
@@ -103,7 +103,7 @@ public class ProductServiceImpl implements ProductService {
                 return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString());
             }
 
-            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listProduct);
+            return new BaseResponse(HttpStatus.FOUND.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listProduct);
         } catch (Exception e) {
             return InternalServerErrorHandler.InternalServerError(e);
         }

@@ -33,5 +33,9 @@ public class CheckoutEntity extends BaseEntity {
     @Column(name = "gross_amount", nullable = false, length = 11)
     @JsonProperty("gross_amount")
     private double grossAmount;
+    
+    @Column(name = "net_amount", nullable = false, length = 11)
+    @JsonProperty("net_amount")
+    private double netAmount;
 
 }

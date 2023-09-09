@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public BaseResponse getUserByUUID(String uuid) {
         try {
-            UserEntity listUser = userRepository.findByUUID(uuid);
+            UserEntity listUser = userRepository.findByUuid(uuid);
 
             if (NullEmptyChecker.isNotNullOrEmpty(listUser)) {
                 return new BaseResponse(HttpStatus.FOUND.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listUser);
