@@ -15,6 +15,9 @@ public class CheckoutItemResponse implements Serializable {
 
     @JsonProperty("product_code")
     private String productCode;
+    
+    @JsonProperty("product_name")
+    private String productName;
 
     @JsonProperty("quantity")
     private int quantity;

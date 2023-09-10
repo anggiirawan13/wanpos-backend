@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
             if (request.getRole().equalsIgnoreCase("admin")) {
                 newUser.setRole(RoleConst.ADMIN.toString());
             } else {
-                newUser.setRole(RoleConst.CASHIER.toString());
+                newUser.setRole(RoleConst.CLIENT.toString());
             }
 
             if (request.getStatus().equalsIgnoreCase("active")) {

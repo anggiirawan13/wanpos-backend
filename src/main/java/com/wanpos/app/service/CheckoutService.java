@@ -12,6 +12,8 @@ public interface CheckoutService {
     BaseResponse findByProductCodeAndUserCode(String productCode, String userCode);
 
     BaseResponse findByProductCode(String code);
+    
+    BaseResponse findByUserCode(String code);
 
     BaseResponse deleteByCheckoutNumber(String checkoutNumber);
 

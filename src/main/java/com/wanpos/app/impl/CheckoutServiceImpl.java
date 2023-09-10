@@ -161,6 +161,29 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
+    public BaseResponse findByUserCode(String code) {
+        try {
+            List<CheckoutResponse> listCheckout = checkoutRepository.findByUserCode(code);
+            if (listCheckout == null || listCheckout.isEmpty()) {
+                return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString());
+            }
+
+            for (CheckoutResponse header : listCheckout) {
+                List<CheckoutItemResponse> listItem = checkoutItemRepository.findByCheckoutNumber(header.getCheckoutNumber());
+                if (listItem == null || listItem.isEmpty()) {
+                    return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString());
+                }
+
+                header.setListItem(listItem);
+            }
+
+            return new BaseResponse(HttpStatus.FOUND.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listCheckout);
+        } catch (Exception e) {
+            return InternalServerErrorHandler.InternalServerError(e);
+        }
+    }
+
+    @Override
     public BaseResponse deleteByCheckoutNumber(String checkoutNumber) {
         try {
             CheckoutEntity dataCheckout = checkoutRepository.findByCheckoutNumber(checkoutNumber);

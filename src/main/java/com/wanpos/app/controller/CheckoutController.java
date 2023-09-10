@@ -45,6 +45,11 @@ public class CheckoutController {
     public BaseResponse findByProductCode(@PathVariable("code") String code) {
         return checkoutServiceImpl.findByProductCode(code);
     }
+    
+    @GetMapping("/user/{code}")
+    public BaseResponse findByUserCode(@PathVariable("code") String code) {
+        return checkoutServiceImpl.findByUserCode(code);
+    }
 
     @DeleteMapping("/{number}")
     public BaseResponse deleteByCheckoutNumber(@PathVariable("number") String number) {

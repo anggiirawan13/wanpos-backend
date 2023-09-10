@@ -13,9 +13,11 @@ import com.wanpos.app.entity.CheckoutItemEntity;
 @Repository
 public interface CheckoutItemRepository extends JpaRepository<CheckoutItemEntity, Long> {
     
-    @Query("SELECT new com.wanpos.app.dto.response.CheckoutItemResponse(productCode, quantity, sellingPrice, lineAmount) "
-        + "FROM CheckoutItemEntity "
-        + "WHERE checkoutNumber = :checkoutNumber")
+    @Query("SELECT new com.wanpos.app.dto.response.CheckoutItemResponse(co.productCode, prod.productName, co.quantity, co.sellingPrice, co.lineAmount) "
+        + "FROM CheckoutItemEntity AS co "
+        + "INNER JOIN ProductEntity AS prod "
+        + "ON co.productCode = prod.productCode "
+        + "WHERE co.checkoutNumber = :checkoutNumber")
     List<CheckoutItemResponse> findByCheckoutNumber(@Param("checkoutNumber") String checkoutNumber);
 
     List<CheckoutItemEntity> findAllByCheckoutNumber(String checkoutNumber);

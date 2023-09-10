@@ -7,16 +7,10 @@ public enum RoleConst {
             return "admin";
         }
     },
-    CASHIER {
+    CLIENT {
         @Override
         public String toString() {
-            return "cashier";
-        }
-    },
-    EMPLOYEE {
-        @Override
-        public String toString() {
-            return "employee";
+            return "client";
         }
     }
 }

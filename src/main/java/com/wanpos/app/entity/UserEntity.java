@@ -18,6 +18,10 @@ import javax.persistence.Table;
 @Table(name = "user")
 public class UserEntity extends BaseEntity {
 
+    @Column(name = "company_code", unique = true, nullable = false, length = 30)
+    @JsonProperty("company_code")
+    private String companyCode;
+
     @Column(name = "user_code", unique = true, nullable = false, length = 20)
     @JsonProperty("user_code")
     private String userCode;

@@ -1,5 +1,7 @@
 package com.wanpos.app.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +11,7 @@ import com.wanpos.app.entity.ProductEntity;
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     
     ProductEntity findByProductCode(String code);
+
+    List<ProductEntity> findAllByStatus(String status);
 
 }

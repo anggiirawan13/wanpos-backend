@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Table(name = "checkout")
 public class CheckoutEntity extends BaseEntity {
 
-    @Column(name = "company_code", nullable = false, length = 30)
+    @Column(name = "company_code", nullable = false, length = 100)
     @JsonProperty("company_code")
     private String companyCode;
 

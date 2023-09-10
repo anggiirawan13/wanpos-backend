@@ -104,7 +104,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public BaseResponse findAll() {
         try {
-            List<ProductEntity> listProduct = productRepository.findAll();
+            List<ProductEntity> listProduct = productRepository.findAllByStatus("active");
             if (listProduct == null || listProduct.isEmpty()) {
                 return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString());
             }

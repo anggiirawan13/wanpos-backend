@@ -26,6 +26,7 @@ public class JWTUtil {
 
         HashMap<String, Object> claims = new HashMap<>();
         claims.put("uuid", user.getUuid());
+        claims.put("company", user.getCompanyCode());
         claims.put("name", user.getUsername());
         claims.put("role", user.getRole());
 

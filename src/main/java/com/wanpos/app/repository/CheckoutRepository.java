@@ -1,5 +1,7 @@
 package com.wanpos.app.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,6 +26,13 @@ public interface CheckoutRepository extends JpaRepository<CheckoutEntity, Long> 
         + "JOIN CheckoutItemEntity itemm "
         + "ON header.checkoutNumber = itemm.checkoutNumber WHERE itemm.productCode = :productCode")
     CheckoutResponse findByProductCode(@Param("productCode")String productCode);
+    
+    @Query("SELECT new com.wanpos.app.dto.response.CheckoutResponse("
+        + "header.companyCode, header.checkoutNumber, header.userCode, header.grossAmount, header.netAmount) "
+        + "FROM CheckoutEntity AS header "
+        + "INNER JOIN CheckoutItemEntity AS item "
+        + "ON header.checkoutNumber = item.checkoutNumber WHERE header.userCode = :code")
+    List<CheckoutResponse> findByUserCode(@Param("code") String code);
 
     CheckoutEntity findByCheckoutNumber(String checkoutNumber);
 
