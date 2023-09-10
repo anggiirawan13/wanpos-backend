@@ -9,8 +9,8 @@ public interface UserService {
 
     BaseResponse userLogin(UserLoginRequest request);
 
-    BaseResponse getUser(int page, int limit, String search);
+    BaseResponse findAll(int page, int limit, String search);
 
-    BaseResponse getUserByUUID(String uuid);
+    BaseResponse findByUuid(String uuid);
 
 }

@@ -25,18 +25,18 @@ public class CheckoutController {
     private CheckoutServiceImpl checkoutServiceImpl;
 
     @PostMapping
-    public BaseResponse saveCheckout(@RequestBody CheckoutRequest request) {
-        return checkoutServiceImpl.saveCheckout(request);
+    public BaseResponse save(@RequestBody CheckoutRequest request) {
+        return checkoutServiceImpl.save(request);
     }
 
     @GetMapping("/{productCode}/{userCode}")
-    public BaseResponse getCheckoutByProductAndUserCode(@PathVariable("productCode") String productCode, @PathVariable("userCode") String userCode) {
-        return checkoutServiceImpl.getCheckoutByProductAndUserCode(productCode, userCode);
+    public BaseResponse findByProductCodeAndUserCode(@PathVariable("productCode") String productCode, @PathVariable("userCode") String userCode) {
+        return checkoutServiceImpl.findByProductCodeAndUserCode(productCode, userCode);
     }
 
     @GetMapping("/{code}")
-    public BaseResponse getCheckoutByProductCode(@PathVariable("code") String code) {
-        return checkoutServiceImpl.getCheckoutByProductCode(code);
+    public BaseResponse findByProductCode(@PathVariable("code") String code) {
+        return checkoutServiceImpl.findByProductCode(code);
     }
 
 }

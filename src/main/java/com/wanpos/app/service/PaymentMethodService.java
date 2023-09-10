@@ -5,8 +5,8 @@ import com.wanpos.app.dto.response.BaseResponse;
 public interface PaymentMethodService {
     
 
-    BaseResponse savePaymentMethod(String code, String name);
+    BaseResponse save(String code, String name);
 
-    BaseResponse getAllPaymentMethod();
+    BaseResponse findAll();
 
 }

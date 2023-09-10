@@ -24,7 +24,8 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public BaseResponse saveProduct(ProductRequest request) {
+    @Override
+    public BaseResponse save(ProductRequest request) {
         try {
             ProductEntity productExist = productRepository.findByProductCode(request.getProductCode());
             if (productExist != null) {
@@ -54,7 +55,8 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    public BaseResponse updateProduct(ProductRequest request) {
+    @Override
+    public BaseResponse update(ProductRequest request) {
         try {
             ProductEntity productExist = productRepository.findByProductCode(request.getProductCode());
             if (productExist == null) {
@@ -83,7 +85,8 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    public BaseResponse getProductByProductCode(String code) {
+    @Override
+    public BaseResponse findByProductCode(String code) {
         try {
             ProductEntity resultProduct = productRepository.findByProductCode(code);
             if (resultProduct == null) {
@@ -96,7 +99,8 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    public BaseResponse getAllProduct() {
+    @Override
+    public BaseResponse findAll() {
         try {
             List<ProductEntity> listProduct = productRepository.findAll();
             if (listProduct == null || listProduct.isEmpty()) {

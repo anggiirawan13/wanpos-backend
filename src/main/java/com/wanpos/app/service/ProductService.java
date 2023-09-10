@@ -5,12 +5,12 @@ import com.wanpos.app.dto.response.BaseResponse;
 
 public interface ProductService {
     
-    BaseResponse saveProduct(ProductRequest request);
+    BaseResponse save(ProductRequest request);
 
-    BaseResponse updateProduct(ProductRequest request);
+    BaseResponse update(ProductRequest request);
 
-    BaseResponse getProductByProductCode(String code);
+    BaseResponse findByProductCode(String code);
 
-    BaseResponse getAllProduct();
+    BaseResponse findAll();
 
 }

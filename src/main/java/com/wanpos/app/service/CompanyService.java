@@ -5,8 +5,8 @@ import com.wanpos.app.dto.response.BaseResponse;
 
 public interface CompanyService {
 
-    BaseResponse saveCompany(CompanyRequest request);
+    BaseResponse save(CompanyRequest request);
 
-    BaseResponse getCompanyByCompanyCode(String companyCode);
+    BaseResponse findByCompanyCode(String companyCode);
     
 }

@@ -16,13 +16,13 @@ public class UserController {
     private UserServiceImpl userServiceImpl;
 
     @GetMapping
-    private BaseResponse getUser(@RequestParam(value = "page", required = false, defaultValue = "0") int page, @RequestParam(value = "limit", required = false, defaultValue = "0") int limit, @RequestParam(value = "search", required = false, defaultValue = "") String search) {
-        return userServiceImpl.getUser(page, limit, search);
+    private BaseResponse findAll(@RequestParam(value = "page", required = false, defaultValue = "0") int page, @RequestParam(value = "limit", required = false, defaultValue = "0") int limit, @RequestParam(value = "search", required = false, defaultValue = "") String search) {
+        return userServiceImpl.findAll(page, limit, search);
     }
 
     @GetMapping("/{uuid}")
-    private BaseResponse getUserByUUID(@PathVariable(value = "uuid") String uuid) {
-        return userServiceImpl.getUserByUUID(uuid);
+    private BaseResponse findByUuid(@PathVariable(value = "uuid") String uuid) {
+        return userServiceImpl.findByUuid(uuid);
     }
 
 }

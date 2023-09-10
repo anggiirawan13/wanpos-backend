@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BaseResponse getUser(int page, int limit, String search) {
+    public BaseResponse findAll(int page, int limit, String search) {
         try {
             List<UserEntity> listUser;
             HashMap<String, Object> addEntity = new HashMap<>();
@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BaseResponse getUserByUUID(String uuid) {
+    public BaseResponse findByUuid(String uuid) {
         try {
             UserEntity listUser = userRepository.findByUuid(uuid);
 

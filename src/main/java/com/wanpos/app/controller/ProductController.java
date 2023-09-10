@@ -26,23 +26,23 @@ public class ProductController {
     private ProductServiceImpl productServiceImpl;
 
     @PostMapping
-    public BaseResponse saveProduct(@RequestBody ProductRequest request) {
-        return productServiceImpl.saveProduct(request);
+    public BaseResponse save(@RequestBody ProductRequest request) {
+        return productServiceImpl.save(request);
     }
 
     @PutMapping
-    public BaseResponse updateProduct(@RequestBody ProductRequest request) {
-        return productServiceImpl.updateProduct(request);
+    public BaseResponse update(@RequestBody ProductRequest request) {
+        return productServiceImpl.update(request);
     }
 
     @GetMapping("/{code}")
-    public BaseResponse getProductByProductCode(@PathVariable("code") String code) {
-        return productServiceImpl.getProductByProductCode(code);
+    public BaseResponse findByProductCode(@PathVariable("code") String code) {
+        return productServiceImpl.findByProductCode(code);
     }
 
     @GetMapping
-    public BaseResponse getAllProduct() {
-        return productServiceImpl.getAllProduct();
+    public BaseResponse findAll() {
+        return productServiceImpl.findAll();
     }
 
 }

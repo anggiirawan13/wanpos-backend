@@ -25,7 +25,7 @@ public class CompanyServiceImpl implements CompanyService {
     private CompanyRepository companyRepository;
 
     @Override
-    public BaseResponse saveCompany(CompanyRequest request) {
+    public BaseResponse save(CompanyRequest request) {
         try {
             CompanyEntity companyCode = companyRepository.findByCompanyCode(request.getCompanyCode());
             if (NullEmptyChecker.isNotNullOrEmpty(companyCode)) {
@@ -54,7 +54,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public BaseResponse getCompanyByCompanyCode(String companyCode) {
+    public BaseResponse findByCompanyCode(String companyCode) {
         try {
             CompanyEntity resultCompany = companyRepository.findByCompanyCode(companyCode);
             if (NullEmptyChecker.isNullOrEmpty(resultCompany)) {

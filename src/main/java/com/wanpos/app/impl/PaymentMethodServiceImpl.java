@@ -24,7 +24,7 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     private PaymentMethodRepository paymentMethodRepository;
 
     @Override
-    public BaseResponse savePaymentMethod(String code, String name) {
+    public BaseResponse save(String code, String name) {
         try {
             PaymentMethodEntity dataExist = paymentMethodRepository.findByPaymentMethodCode(code);
             if (dataExist != null) {
@@ -52,7 +52,7 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     }
 
     @Override
-    public BaseResponse getAllPaymentMethod() {
+    public BaseResponse findAll() {
         try {
             List<PaymentMethodEntity> listPaymentMethod = paymentMethodRepository.findAll();
             if (listPaymentMethod == null || listPaymentMethod.isEmpty()) {

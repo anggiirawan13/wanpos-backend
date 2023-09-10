@@ -5,10 +5,10 @@ import com.wanpos.app.dto.response.BaseResponse;
 
 public interface CheckoutService {
     
-    BaseResponse saveCheckout(CheckoutRequest request);
+    BaseResponse save(CheckoutRequest request);
 
-    BaseResponse getCheckoutByProductAndUserCode(String productCode, String userCode);
+    BaseResponse findByProductCodeAndUserCode(String productCode, String userCode);
 
-    BaseResponse getCheckoutByProductCode(String code);
+    BaseResponse findByProductCode(String code);
 
 }

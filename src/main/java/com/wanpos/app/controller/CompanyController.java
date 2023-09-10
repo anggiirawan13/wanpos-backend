@@ -25,13 +25,13 @@ public class CompanyController {
     private CompanyServiceImpl companyServiceImpl;
 
     @PostMapping
-    public BaseResponse saveCompany(@RequestBody CompanyRequest request) {
-        return companyServiceImpl.saveCompany(request);
+    public BaseResponse save(@RequestBody CompanyRequest request) {
+        return companyServiceImpl.save(request);
     }
 
     @GetMapping("/{code}")
-    public BaseResponse getCompanyByCompanyCode(@PathVariable(value = "code") String companyCode) {
-        return companyServiceImpl.getCompanyByCompanyCode(companyCode);
+    public BaseResponse findByCompanyCode(@PathVariable(value = "code") String companyCode) {
+        return companyServiceImpl.findByCompanyCode(companyCode);
     }
 
 }

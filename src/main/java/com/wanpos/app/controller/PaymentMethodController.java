@@ -23,13 +23,13 @@ public class PaymentMethodController {
     private PaymentMethodServiceImpl paymentMethodServiceImpl;
 
     @PostMapping
-    public BaseResponse savePaymentMethod(@RequestParam("code") String code, @RequestParam("name") String name) {
-        return paymentMethodServiceImpl.savePaymentMethod(code, name);
+    public BaseResponse save(@RequestParam("code") String code, @RequestParam("name") String name) {
+        return paymentMethodServiceImpl.save(code, name);
     }
 
     @GetMapping
-    public BaseResponse getAllPaymentMethod() {
-        return paymentMethodServiceImpl.getAllPaymentMethod();
+    public BaseResponse findAll() {
+        return paymentMethodServiceImpl.findAll();
     }
 
 }

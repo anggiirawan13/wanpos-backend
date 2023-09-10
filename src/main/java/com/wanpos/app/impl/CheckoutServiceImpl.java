@@ -34,7 +34,7 @@ public class CheckoutServiceImpl implements CheckoutService {
     private CheckoutItemRepository checkoutItemRepository;
 
     @Override
-    public BaseResponse saveCheckout(CheckoutRequest request) {
+    public BaseResponse save(CheckoutRequest request) {
         try {
             CheckoutEntity newDataHeader = new CheckoutEntity();
             newDataHeader.setUuid(UUID.randomUUID().toString());
@@ -74,7 +74,7 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
-    public BaseResponse getCheckoutByProductAndUserCode(String productCode, String userCode) {
+    public BaseResponse findByProductCodeAndUserCode(String productCode, String userCode) {
         try {
             CheckoutResponse dataCheckout = checkoutRepository.findByProductCodeAndUserCode(productCode, userCode);
             if (dataCheckout == null) {
@@ -96,7 +96,7 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
-    public BaseResponse getCheckoutByProductCode(String code) {
+    public BaseResponse findByProductCode(String code) {
         try {
             CheckoutResponse dataCheckout = checkoutRepository.findByProductCode(code);
             if (dataCheckout == null) {
