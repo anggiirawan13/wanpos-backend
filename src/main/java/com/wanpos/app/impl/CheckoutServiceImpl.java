@@ -68,7 +68,52 @@ public class CheckoutServiceImpl implements CheckoutService {
 
             return new BaseResponse(HttpStatus.CREATED.value(), true, ResponseMessagesConst.INSERT_SUCCESS.toString());
         } catch (Exception e) {
-            System.out.println(e.toString());
+            return InternalServerErrorHandler.InternalServerError(e);
+        }
+    }
+
+    @Override
+    public BaseResponse update(CheckoutRequest request) {
+        try {
+            CheckoutEntity oldDataHeader = checkoutRepository.findByCheckoutNumber(request.getCheckoutNumber());
+            if (oldDataHeader == null) {
+                return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.UPDATE_FAILED.toString());
+            }
+
+            oldDataHeader.setUuid(UUID.randomUUID().toString());
+            oldDataHeader.setCompanyCode(request.getCompanyCode());
+            oldDataHeader.setCheckoutNumber(request.getCheckoutNumber());
+            oldDataHeader.setGrossAmount(request.getGrossAmount());
+            oldDataHeader.setNetAmount(request.getNetAmount());
+            oldDataHeader.setUserCode(request.getUserCode());
+
+            Timestamp dateNow = new Timestamp(new Date().getTime());
+
+            oldDataHeader.setCreatedAt(dateNow);
+            oldDataHeader.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+            oldDataHeader.setModifiedAt(dateNow);
+            oldDataHeader.setModifiedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+            
+            List<CheckoutItemEntity> listItem = checkoutItemRepository.findAllByCheckoutNumber(request.getCheckoutNumber());
+            checkoutItemRepository.deleteAll(listItem);
+
+            listItem = new ArrayList<>();
+            for (CheckoutItemRequest item : request.getListItem()) {
+                CheckoutItemEntity dataItem = new CheckoutItemEntity();
+                dataItem.setCheckoutNumber(item.getCheckoutNumber());
+                dataItem.setLineAmount(item.getLineAmount());
+                dataItem.setProductCode(item.getProductCode());
+                dataItem.setQuantity(item.getQuantity());
+                dataItem.setSellingPrice(item.getSellingPrice());
+                
+                listItem.add(dataItem);
+            }
+
+            checkoutRepository.save(oldDataHeader);
+            checkoutItemRepository.saveAll(listItem);
+
+            return new BaseResponse(HttpStatus.CREATED.value(), true, ResponseMessagesConst.UPDATE_SUCCESS.toString());
+        } catch (Exception e) {
             return InternalServerErrorHandler.InternalServerError(e);
         }
     }
@@ -90,7 +135,6 @@ public class CheckoutServiceImpl implements CheckoutService {
 
             return new BaseResponse(HttpStatus.FOUND.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), dataCheckout);
         } catch (Exception e) {
-            System.out.println(e.toString());
             return InternalServerErrorHandler.InternalServerError(e);
         }
     }
@@ -112,7 +156,25 @@ public class CheckoutServiceImpl implements CheckoutService {
 
             return new BaseResponse(HttpStatus.FOUND.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), dataCheckout);
         } catch (Exception e) {
-            System.out.println(e.toString());
+            return InternalServerErrorHandler.InternalServerError(e);
+        }
+    }
+
+    @Override
+    public BaseResponse deleteByCheckoutNumber(String checkoutNumber) {
+        try {
+            CheckoutEntity dataCheckout = checkoutRepository.findByCheckoutNumber(checkoutNumber);
+            if (dataCheckout == null) {
+                return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString());
+            }
+
+            checkoutRepository.delete(dataCheckout);
+
+            List<CheckoutItemEntity> listItem = checkoutItemRepository.findAllByCheckoutNumber(checkoutNumber);
+            checkoutItemRepository.deleteAll(listItem);
+
+            return new BaseResponse(HttpStatus.OK.value(), false, ResponseMessagesConst.DELETE_SUCCESS.toString());
+        } catch (Exception e) {
             return InternalServerErrorHandler.InternalServerError(e);
         }
     }

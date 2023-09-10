@@ -2,6 +2,7 @@ package com.wanpos.app.impl;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,9 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public BaseResponse save(CompanyRequest request) {
         try {
-            CompanyEntity companyCode = companyRepository.findByCompanyCode(request.getCompanyCode());
-            if (NullEmptyChecker.isNotNullOrEmpty(companyCode)) {
-                return new BaseResponse(HttpStatus.CONFLICT.value(), true, ResponseMessagesConst.ALREADY_EXIST.toString());
+            CompanyEntity company = companyRepository.findByCompanyCode(request.getCompanyCode());
+            if (NullEmptyChecker.isNotNullOrEmpty(company)) {
+                return new BaseResponse(HttpStatus.CONFLICT.value(), false, ResponseMessagesConst.ALREADY_EXIST.toString());
             }
 
             CompanyEntity newData = new CompanyEntity();
@@ -54,6 +55,30 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public BaseResponse update(CompanyRequest request) {
+        try {
+            CompanyEntity company = companyRepository.findByCompanyCode(request.getCompanyCode());
+            if (NullEmptyChecker.isNullOrEmpty(company)) {
+                return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString());
+            }
+
+            company.setCompanyName(request.getCompanyName());
+            company.setCompanyAddress(request.getCompanyAddress());
+
+            Timestamp dateNow = new Timestamp(new Date().getTime());
+
+            company.setModifiedAt(dateNow);
+            company.setModifiedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+
+            companyRepository.save(company);
+
+            return new BaseResponse(HttpStatus.CREATED.value(), true, ResponseMessagesConst.INSERT_SUCCESS.toString());
+        } catch (Exception e) {
+            return InternalServerErrorHandler.InternalServerError(e);
+        }
+    }
+
+    @Override
     public BaseResponse findByCompanyCode(String companyCode) {
         try {
             CompanyEntity resultCompany = companyRepository.findByCompanyCode(companyCode);
@@ -62,6 +87,20 @@ public class CompanyServiceImpl implements CompanyService {
             }
 
             return new BaseResponse(HttpStatus.FOUND.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), resultCompany);
+        } catch (Exception e) {
+            return InternalServerErrorHandler.InternalServerError(e);
+        }
+    }
+
+    @Override
+    public BaseResponse findAll() {
+        try {
+            List<CompanyEntity> listCompany = companyRepository.findAll();
+            if (NullEmptyChecker.isNullOrEmpty(listCompany)) {
+                return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString());
+            }
+
+            return new BaseResponse(HttpStatus.FOUND.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listCompany);
         } catch (Exception e) {
             return InternalServerErrorHandler.InternalServerError(e);
         }

@@ -39,6 +39,7 @@ public class ProductServiceImpl implements ProductService {
             newData.setBuyingPrice(request.getBuyingPrice());
             newData.setSellingPrice(request.getSellingPrice());
             newData.setStock(request.getStock());
+            newData.setStatus("active");
 
             Timestamp dateNow = new Timestamp(new Date().getTime());
 
@@ -69,6 +70,7 @@ public class ProductServiceImpl implements ProductService {
             productExist.setBuyingPrice(request.getBuyingPrice());
             productExist.setSellingPrice(request.getSellingPrice());
             productExist.setStock(request.getStock());
+            productExist.setStatus("active");
 
             Timestamp dateNow = new Timestamp(new Date().getTime());
 
@@ -108,6 +110,24 @@ public class ProductServiceImpl implements ProductService {
             }
 
             return new BaseResponse(HttpStatus.FOUND.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), listProduct);
+        } catch (Exception e) {
+            return InternalServerErrorHandler.InternalServerError(e);
+        }
+    }
+
+    @Override
+    public BaseResponse deleteByProductCode(String code) {
+        try {
+            ProductEntity product = productRepository.findByProductCode(code);
+            if (product == null) {
+                return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString());
+            }
+
+            product.setStatus("inactive");
+
+            productRepository.save(product);
+
+            return new BaseResponse(HttpStatus.OK.value(), true, ResponseMessagesConst.DELETE_SUCCESS.toString());
         } catch (Exception e) {
             return InternalServerErrorHandler.InternalServerError(e);
         }

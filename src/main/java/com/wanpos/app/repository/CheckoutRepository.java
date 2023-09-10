@@ -25,4 +25,6 @@ public interface CheckoutRepository extends JpaRepository<CheckoutEntity, Long> 
         + "ON header.checkoutNumber = itemm.checkoutNumber WHERE itemm.productCode = :productCode")
     CheckoutResponse findByProductCode(@Param("productCode")String productCode);
 
+    CheckoutEntity findByCheckoutNumber(String checkoutNumber);
+
 }

@@ -37,5 +37,9 @@ public class ProductEntity extends BaseEntity {
     @Column(name = "stock", nullable = false, length = 4)
     @JsonProperty("stock")
     private int stock;
+    
+    @Column(name = "status", nullable = false, length = 10)
+    @JsonProperty("status")
+    private String status;
 
 }

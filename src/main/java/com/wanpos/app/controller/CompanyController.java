@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,9 +30,19 @@ public class CompanyController {
         return companyServiceImpl.save(request);
     }
 
+    @PutMapping
+    public BaseResponse update(@RequestBody CompanyRequest request) {
+        return companyServiceImpl.update(request);
+    }
+
     @GetMapping("/{code}")
     public BaseResponse findByCompanyCode(@PathVariable(value = "code") String companyCode) {
         return companyServiceImpl.findByCompanyCode(companyCode);
+    }
+
+    @GetMapping
+    public BaseResponse findAll() {
+        return companyServiceImpl.findAll();
     }
 
 }

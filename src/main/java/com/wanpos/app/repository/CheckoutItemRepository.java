@@ -18,4 +18,6 @@ public interface CheckoutItemRepository extends JpaRepository<CheckoutItemEntity
         + "WHERE checkoutNumber = :checkoutNumber")
     List<CheckoutItemResponse> findByCheckoutNumber(@Param("checkoutNumber") String checkoutNumber);
 
+    List<CheckoutItemEntity> findAllByCheckoutNumber(String checkoutNumber);
+
 }

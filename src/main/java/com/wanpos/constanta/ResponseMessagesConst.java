@@ -43,6 +43,18 @@ public enum ResponseMessagesConst {
         public String toString() {
             return "ALREADY_EXIST";
         }
+    },
+    DELETE_SUCCESS {
+        @Override
+        public String toString() {
+            return "DELETE_SUCCESS";
+        }
+    },
+    DELETE_FAILED {
+        @Override
+        public String toString() {
+            return "DELETE_FAILED";
+        }
     }
 
 }

@@ -13,4 +13,6 @@ public interface ProductService {
 
     BaseResponse findAll();
 
+    BaseResponse deleteByProductCode(String code);
+
 }

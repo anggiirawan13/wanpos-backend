@@ -7,8 +7,12 @@ public interface CheckoutService {
     
     BaseResponse save(CheckoutRequest request);
 
+    BaseResponse update(CheckoutRequest request);
+
     BaseResponse findByProductCodeAndUserCode(String productCode, String userCode);
 
     BaseResponse findByProductCode(String code);
+
+    BaseResponse deleteByCheckoutNumber(String checkoutNumber);
 
 }
