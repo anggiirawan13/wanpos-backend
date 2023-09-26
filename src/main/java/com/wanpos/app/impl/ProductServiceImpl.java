@@ -133,4 +133,17 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
+    public BaseResponse findStockByProductCode(String code) {
+        try {
+            int stock = productRepository.findStockByProductCode(code);
+            if (stock == 0) {
+                return new BaseResponse(HttpStatus.NOT_FOUND.value(), false, ResponseMessagesConst.DATA_NOT_FOUND.toString(), 0);
+            }
+
+            return new BaseResponse(HttpStatus.FOUND.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), stock);
+        } catch (Exception e) {
+            return InternalServerErrorHandler.InternalServerError(e);
+        }
+    }
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wanpos.app.dto.request.ProductRequest;
 import com.wanpos.app.dto.response.BaseResponse;
-import com.wanpos.app.impl.ProductServiceImpl;
+import com.wanpos.app.service.ProductService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -22,33 +22,38 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/product")
 public class ProductController {
-    
+
     @Autowired
-    private ProductServiceImpl productServiceImpl;
+    private ProductService productService;
 
     @PostMapping
     public BaseResponse save(@RequestBody ProductRequest request) {
-        return productServiceImpl.save(request);
+        return productService.save(request);
     }
 
     @PutMapping
     public BaseResponse update(@RequestBody ProductRequest request) {
-        return productServiceImpl.update(request);
+        return productService.update(request);
     }
 
     @GetMapping("/{code}")
     public BaseResponse findByProductCode(@PathVariable("code") String code) {
-        return productServiceImpl.findByProductCode(code);
+        return productService.findByProductCode(code);
     }
 
     @GetMapping
     public BaseResponse findAll() {
-        return productServiceImpl.findAll();
+        return productService.findAll();
     }
 
     @DeleteMapping("/{code}")
     public BaseResponse deleteByProductCode(@PathVariable("code") String code) {
-        return productServiceImpl.deleteByProductCode(code);
+        return productService.deleteByProductCode(code);
+    }
+
+    @GetMapping("/stock/{code}")
+    public BaseResponse findStockByProductCode(String code) {
+        return productService.findStockByProductCode(code);
     }
 
 }

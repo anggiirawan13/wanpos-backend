@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wanpos.app.dto.request.UserLoginRequest;
 import com.wanpos.app.dto.request.UserRegisterRequest;
 import com.wanpos.app.dto.response.BaseResponse;
-import com.wanpos.app.impl.UserServiceImpl;
+import com.wanpos.app.service.UserService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -22,27 +22,28 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping(value = "/auth")
 public class AuthController {
-    
+
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private UserService userService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @PostMapping(value = "/register")
     private BaseResponse userRegister(@RequestBody UserRegisterRequest request) {
-        return userServiceImpl.userRegister(request);
+        return userService.userRegister(request);
     }
 
     @PostMapping(value = "/login")
     private BaseResponse userLogin(@RequestBody UserLoginRequest request) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         } catch (Exception e) {
             return new BaseResponse(HttpStatus.FORBIDDEN.value(), false, "LOGIN_FAILED", null);
         }
 
-        return userServiceImpl.userLogin(request);
+        return userService.userLogin(request);
     }
 
 }

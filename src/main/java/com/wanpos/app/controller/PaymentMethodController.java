@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wanpos.app.dto.response.BaseResponse;
-import com.wanpos.app.impl.PaymentMethodServiceImpl;
+import com.wanpos.app.service.PaymentMethodService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -18,18 +18,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/payment/method")
 public class PaymentMethodController {
-    
+
     @Autowired
-    private PaymentMethodServiceImpl paymentMethodServiceImpl;
+    private PaymentMethodService paymentMethodService;
 
     @PostMapping
     public BaseResponse save(@RequestParam("code") String code, @RequestParam("name") String name) {
-        return paymentMethodServiceImpl.save(code, name);
+        return paymentMethodService.save(code, name);
     }
 
     @GetMapping
     public BaseResponse findAll() {
-        return paymentMethodServiceImpl.findAll();
+        return paymentMethodService.findAll();
     }
 
 }

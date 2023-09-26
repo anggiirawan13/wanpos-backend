@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wanpos.app.dto.request.CompanyRequest;
 import com.wanpos.app.dto.response.BaseResponse;
-import com.wanpos.app.impl.CompanyServiceImpl;
+import com.wanpos.app.service.CompanyService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -21,28 +21,28 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("company")
 public class CompanyController {
-    
+
     @Autowired
-    private CompanyServiceImpl companyServiceImpl;
+    private CompanyService companyService;
 
     @PostMapping
     public BaseResponse save(@RequestBody CompanyRequest request) {
-        return companyServiceImpl.save(request);
+        return companyService.save(request);
     }
 
     @PutMapping
     public BaseResponse update(@RequestBody CompanyRequest request) {
-        return companyServiceImpl.update(request);
+        return companyService.update(request);
     }
 
     @GetMapping("/{code}")
     public BaseResponse findByCompanyCode(@PathVariable(value = "code") String companyCode) {
-        return companyServiceImpl.findByCompanyCode(companyCode);
+        return companyService.findByCompanyCode(companyCode);
     }
 
     @GetMapping
     public BaseResponse findAll() {
-        return companyServiceImpl.findAll();
+        return companyService.findAll();
     }
 
 }

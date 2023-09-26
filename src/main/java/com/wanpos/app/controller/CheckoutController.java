@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wanpos.app.dto.request.CheckoutRequest;
 import com.wanpos.app.dto.response.BaseResponse;
-import com.wanpos.app.impl.CheckoutServiceImpl;
+import com.wanpos.app.service.CheckoutService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -22,38 +22,39 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/checkout")
 public class CheckoutController {
-    
+
     @Autowired
-    private CheckoutServiceImpl checkoutServiceImpl;
+    private CheckoutService checkoutService;
 
     @PostMapping
     public BaseResponse save(@RequestBody CheckoutRequest request) {
-        return checkoutServiceImpl.save(request);
+        return checkoutService.save(request);
     }
 
     @PutMapping
     public BaseResponse update(@RequestBody CheckoutRequest request) {
-        return checkoutServiceImpl.update(request);
+        return checkoutService.update(request);
     }
 
     @GetMapping("/{productCode}/{userCode}")
-    public BaseResponse findByProductCodeAndUserCode(@PathVariable("productCode") String productCode, @PathVariable("userCode") String userCode) {
-        return checkoutServiceImpl.findByProductCodeAndUserCode(productCode, userCode);
+    public BaseResponse findByProductCodeAndUserCode(@PathVariable("productCode") String productCode,
+            @PathVariable("userCode") String userCode) {
+        return checkoutService.findByProductCodeAndUserCode(productCode, userCode);
     }
 
     @GetMapping("/{code}")
     public BaseResponse findByProductCode(@PathVariable("code") String code) {
-        return checkoutServiceImpl.findByProductCode(code);
+        return checkoutService.findByProductCode(code);
     }
-    
+
     @GetMapping("/user/{code}")
     public BaseResponse findByUserCode(@PathVariable("code") String code) {
-        return checkoutServiceImpl.findByUserCode(code);
+        return checkoutService.findByUserCode(code);
     }
 
     @DeleteMapping("/{number}")
     public BaseResponse deleteByCheckoutNumber(@PathVariable("number") String number) {
-        return checkoutServiceImpl.deleteByCheckoutNumber(number);
+        return checkoutService.deleteByCheckoutNumber(number);
     }
 
 }

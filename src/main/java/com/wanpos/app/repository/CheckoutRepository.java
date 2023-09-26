@@ -13,19 +13,21 @@ import com.wanpos.app.entity.CheckoutEntity;
 @Repository
 public interface CheckoutRepository extends JpaRepository<CheckoutEntity, Long> {
 
-    @Query(value = "SELECT header.company_code, header.checkout_number, header.user_code, header.gross_amount, header.net_amount "
-    + "FROM checkout AS header "
-    + "INNER JOIN (SELECT checkout_number FROM checkout_item WHERE product_code = :productCode) AS item "
-    + "ON header.checkout_number = item.checkout_number "
-    + "WHERE header.user_code = :userCode", nativeQuery = true)
-    CheckoutResponse findByProductCodeAndUserCode(String productCode, String userCode);
+    @Query("SELECT new com.wanpos.app.dto.response.CheckoutResponse("
+        + "header.companyCode, header.checkoutNumber, header.userCode, header.grossAmount, header.netAmount) "
+        + "FROM CheckoutEntity AS header "
+        + "INNER JOIN CheckoutItemEntity AS item "
+        + "ON header.checkoutNumber = item.checkoutNumber "
+        + "WHERE item.productCode = :productCode "
+        + "AND header.userCode = :userCode")
+    CheckoutResponse findByProductCodeAndUserCode(@Param("productCode") String productCode, @Param("userCode") String userCode);
 
     @Query("SELECT new com.wanpos.app.dto.response.CheckoutResponse("
         + "header.companyCode, header.checkoutNumber, header.userCode, header.grossAmount, header.netAmount) "
-        + "FROM CheckoutEntity header "
-        + "JOIN CheckoutItemEntity itemm "
-        + "ON header.checkoutNumber = itemm.checkoutNumber WHERE itemm.productCode = :productCode")
-    CheckoutResponse findByProductCode(@Param("productCode")String productCode);
+        + "FROM CheckoutEntity AS header "
+        + "INNER JOIN CheckoutItemEntity AS item "
+        + "ON header.checkoutNumber = item.checkoutNumber WHERE item.productCode = :code")
+    CheckoutResponse findByProductCode(@Param("code") String code);
     
     @Query("SELECT new com.wanpos.app.dto.response.CheckoutResponse("
         + "header.companyCode, header.checkoutNumber, header.userCode, header.grossAmount, header.netAmount) "

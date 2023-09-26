@@ -135,6 +135,7 @@ public class CheckoutServiceImpl implements CheckoutService {
 
             return new BaseResponse(HttpStatus.FOUND.value(), true, ResponseMessagesConst.DATA_FOUND.toString(), dataCheckout);
         } catch (Exception e) {
+            System.out.println(e);
             return InternalServerErrorHandler.InternalServerError(e);
         }
     }

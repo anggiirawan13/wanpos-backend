@@ -15,4 +15,6 @@ public interface ProductService {
 
     BaseResponse deleteByProductCode(String code);
 
+    BaseResponse findStockByProductCode(String code);
+
 }
